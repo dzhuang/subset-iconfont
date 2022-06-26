@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 23.945 23.876" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+        <defs>
+            <filter id="shadow-filter" x="-5" y="-5" width="10" height="10">
+                <feOffset dx="3" dy="2"/><feComponentTransfer result="shad"></feComponentTransfer>
+                <feFlood flood-color="rgba(0,0,0,0.3)"/>
+                <feComposite in2="shad" operator="in"/>
+                <feMerge>
+                    <feMergeNode/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <path d="M 7.753 10.422 C 7.768 10.384 -1.81 3.206 4.603 3.206 C 6.465 3.206 8.051 9.066 9.94 8.321 C 11.819 7.579 8.638 2.347 9.94 1.093 C 14.449 -3.255 12.972 8.309 13.005 8.321 C 14.978 9.098 16.436 3.206 18.342 3.206 C 24.754 3.206 15.176 10.384 15.193 10.422 C 15.206 10.454 27.242 9.034 22.716 13.368 C 20.448 15.538 14.699 10.535 13.005 15.47 C 12.999 15.487 14.438 27.036 9.94 22.697 C 8.638 21.442 11.819 16.211 9.94 15.47 C 8.051 14.723 6.465 20.586 4.603 20.586 C -1.804 20.586 7.773 13.416 7.753 13.368 C 6.985 11.568 1.532 14.615 0.23 13.368 C -0.796 12.386 6.798 12.65 7.753 10.422 Z" style="filter: url(#shadow-filter);"/>
+</svg>

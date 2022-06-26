@@ -1,0 +1,58 @@
+// variables
+// --------------------------
+${{ prefix }}-css-prefix          : {{ prefix }} !default;
+${{ prefix }}-style               : {{ fontWeightDefault }} !default;
+${{ prefix }}-style-family        : '{{ fontName }}' !default;
+
+${{ prefix }}-display             : inline-block !default;
+
+${{ prefix }}-fw-width            : {{ prefix }}-divide(20em, 16);
+${{ prefix }}-inverse             : #fff !default;
+
+${{ prefix }}-border-color        : #eee !default;
+${{ prefix }}-border-padding      : .2em .25em .15em !default;
+${{ prefix }}-border-radius       : .1em !default;
+${{ prefix }}-border-style        : solid !default;
+${{ prefix }}-border-width        : .08em !default;
+
+${{ prefix }}-size-scale-2xs      : 10 !default;
+${{ prefix }}-size-scale-xs       : 12 !default;
+${{ prefix }}-size-scale-sm       : 14 !default;
+${{ prefix }}-size-scale-base     : 16 !default;
+${{ prefix }}-size-scale-lg       : 20 !default;
+${{ prefix }}-size-scale-xl       : 24 !default;
+${{ prefix }}-size-scale-2xl      : 32 !default;
+
+${{ prefix }}-sizes: (
+  "2xs"                 : ${{ prefix }}-size-scale-2xs,
+  "xs"                  : ${{ prefix }}-size-scale-xs,
+  "sm"                  : ${{ prefix }}-size-scale-sm,
+  "lg"                  : ${{ prefix }}-size-scale-lg,
+  "xl"                  : ${{ prefix }}-size-scale-xl,
+  "2xl"                 : ${{ prefix }}-size-scale-2xl
+) !default;
+
+${{ prefix }}-li-width            : 2em !default;
+${{ prefix }}-li-margin           : ${{ prefix }}-li-width * {{ prefix }}-divide(5, 4) !default;
+
+${{ prefix }}-pull-margin         : .3em !default;
+
+${{ prefix }}-primary-opacity     : 1 !default;
+${{ prefix }}-secondary-opacity   : .4 !default;
+
+${{ prefix }}-stack-vertical-align: middle !default;
+${{ prefix }}-stack-width         : (${{ prefix }}-fw-width * 2) !default;
+${{ prefix }}-stack-z-index       : auto !default;
+
+${{ prefix }}-font-display        : block !default;
+${{ prefix }}-font-path           : "../{{ webfontDir }}" !default;
+
+{% for name, properties in icons | dictsort %}
+${{ prefix }}-var-{{ name }}: \{{ properties.unicode }};
+{%- endfor %}
+
+${{ prefix }}-icons: (
+    {%- for name, properties in icons | dictsort %}
+    "{{ name }}": ${{ prefix }}-var-{{ name }}{% if not loop.last %},{% endif %}
+    {%- endfor %}
+);

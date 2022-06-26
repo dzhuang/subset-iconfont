@@ -1,0 +1,32 @@
+// stacking icons
+// -------------------------
+
+.#{${{ prefix }}-css-prefix}-stack {
+  display: inline-block;
+  height: 2em;
+  line-height: 2em;
+  position: relative;
+  vertical-align: ${{ prefix }}-stack-vertical-align;
+  width: ${{ prefix }}-stack-width;
+}
+
+.#{${{ prefix }}-css-prefix}-stack-1x,
+.#{${{ prefix }}-css-prefix}-stack-2x {
+  left: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  z-index: var(--#{${{ prefix }}-css-prefix}-stack-z-index, #{${{ prefix }}-stack-z-index});
+}
+
+.#{${{ prefix }}-css-prefix}-stack-1x {
+  line-height: inherit;
+}
+
+.#{${{ prefix }}-css-prefix}-stack-2x {
+  font-size: 2em;
+}
+
+.#{${{ prefix }}-css-prefix}-inverse {
+  color: var(--#{${{ prefix }}-css-prefix}-inverse, #{${{ prefix }}-inverse});
+}

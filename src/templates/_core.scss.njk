@@ -1,0 +1,26 @@
+// base icon class definition
+// -------------------------
+
+.#{${{ prefix }}-css-prefix} {
+  font-family: var(--#{${{ prefix }}-css-prefix}-style-family, '#{${{ prefix }}-style-family}');
+  font-weight: var(--#{${{ prefix }}-css-prefix}-style, #{${{ prefix }}-style});
+}
+
+.#{${{ prefix }}-css-prefix}
+{%- if styles %},
+{%- for style in styles %}
+.#{${{ prefix }}-css-prefix}-{{ style}}{% if not loop.last %},{% endif %}
+{%- endfor -%}
+{% endif -%}{
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: var(--#{${{ prefix }}-css-prefix}-display, #{${{ prefix }}-display});
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+%{{ prefix }}-icon {
+  @include {{ prefix }}-icon;
+}
