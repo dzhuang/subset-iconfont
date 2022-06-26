@@ -1,0 +1,87 @@
+{
+  "name": "iconfont-subset",
+  "version": "0.1.0",
+  "description": "Utility to generate subset of webfonts from subsets of multiple iconfont and use FontAwesome style css.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "font",
+    "webfont",
+    "subset",
+    "icon",
+    "icons"
+  ],
+  "scripts": {
+    "clean": "rimraf dist output output-standalone",
+    "precopy": "npm run clean",
+    "copy": "copyfiles -e \"**/*.ts\" -u 1 \"src/**/*\" dist",
+    "prebuild": "npm run copy",
+    "build": "tsc",
+    "demo": "node demo-combine.js && node demo-standalone.js",
+    "dev-demo": "npm run build && npm run demo",
+    "pretest": "npm run build",
+    "test": "nyc --reporter=lcov mocha tests/*.mocha.ts",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint . --ext .ts",
+    "postlint": "npm run prettier",
+    "prettier": "npx prettier --write ."
+  },
+  "author": "Dong Zhuang <dzhuang.scut@gmail.com> (https://github.com/dzhuang)",
+  "files": [
+    "dist",
+    "demo.js",
+    "package.json"
+  ],
+  "mocha": {
+    "colors": true,
+    "recursive": [
+      "tests/**/*.mocha.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "dependencies": {
+    "@mdi/font": "^6.7.96",
+    "js-yaml": "^4.1.0",
+    "mkdirp": "^1.0.4",
+    "node-sass": "^7.0.1",
+    "nunjucks": "^3.2.3",
+    "subset-font": "^1.4.0",
+    "tmp": "^0.2.1",
+    "ttf2eot": "^3.1.0",
+    "ttf2svg": "^1.2.0",
+    "ttf2woff": "^3.0.0",
+    "ttf2woff2": "^4.0.5",
+    "winston": "^3.7.2"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzhuang/svgicon-subset.git"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "@material-design-icons/svg": "^0.11.2",
+    "@mdi/svg": "^6.7.96",
+    "@types/mkdirp": "^1.0.2",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.0.0",
+    "@types/tmp": "^0.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "bootstrap-icons": "^1.8.3",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.17.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "material-icons": "^1.11.2",
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0",
+    "prettier": "2.7.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.4",
+    "sinon": "^14.0.0",
+    "ts-node": "10.8.0",
+    "typescript": "^4.7.2"
+  }
+}

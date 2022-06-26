@@ -1,0 +1,26 @@
+@import 'functions';
+@import 'variables';
+
+:root, :host {
+  --#{${{ prefix }}-css-prefix}-font-normal: normal normal 1em/1 "#{ ${{ prefix }}-style-family }";
+}
+
+@font-face {
+  font-family: '{{ fontName }}{% if style != "normal" %} {{ style | title }}{% endif %}';
+  font-weight: {{ fontWeight }};
+  font-display: ${{ prefix }}-font-display;
+  {% set formatDict = {"eot": "embedded-opentype", "ttf": "truetype", "svg": "svg", "woff": "woff", "woff2": "woff2"} %}
+  {%- for format in formats -%}
+  {% if format == "eot" %}
+  src: url('#{${{ prefix }}-font-path}/{{ fontFileName }}.eot{% if hash %}?v={{ hash }}{% endif %}');
+  {% endif %}
+  {%- endfor -%}
+  src: {% for format in formats %}{% if not loop.first %}  {% endif %}url('#{${{ prefix }}-font-path}/{{ fontFileName }}.{{ format }}{% if format == "eot" or hash %}?{% endif %}{% if hash %}v={{ hash }}{% endif %}{% if format == "eot" %}#iefix{% endif %}') format('{{ formatDict[format] }}'){% if not loop.last %},{% else %};{% endif %}
+  {% endfor -%}
+{#  todo: add unicode-range #}
+}
+
+.#{${{ prefix }}-css-prefix}{% if style and style != "normal" %}-{{ style }}{% endif %} {
+  font-family: '{{ fontName }}{% if style != "normal" %} {{ style | title }}{% endif %}';
+  font-weight: {{ fontWeight }};
+}

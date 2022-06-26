@@ -1,0 +1,11 @@
+dist
+node_modules
+output*
+coverage
+.nyc_output
+package.json
+.eslintrc
+package-lock.json
+tsconfig.json
+.nycrc
+**/tmp

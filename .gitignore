@@ -1,0 +1,9 @@
+node_modules
+dist
+output
+output-standalone
+coverage
+.nyc_output
+/tests/tmp/
+**.log
+/.idea
