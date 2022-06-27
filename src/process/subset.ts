@@ -13,30 +13,28 @@ import { readFileSync } from "fs";
 
 const subsetFont = require("subset-font");
 const ttf2eot = require("ttf2eot");
-const ttf2woff = require("ttf2woff");
-const ttf2woff2 = require("ttf2woff2");
 
 type GetToSubsetOptions = (wfTask: SubsetTask) => ToSubsetFontsOptions;
 
 const getSubsetOptions: GetToSubsetOptions = (wfTask: SubsetTask) => {
   return {
     subsetItems: wfTask.subsetItems,
-    ttfTargetPath: wfTask.ttfTargetPath,
+    targetFontPath: wfTask.targetFontPath,
     style: wfTask.style,
-    formats: wfTask.context.options.formats as Formats,
   };
 };
 
 type ToSubsetFonts = (
-  toTtfSubsetOptions: ToSubsetFontsOptions
+  toTtfSubsetOptions: ToSubsetFontsOptions,
+  targetFormat: string
 ) => Promise<string>;
 
-const toSubsetFonts: ToSubsetFonts = (toSubsetOptions) => {
+const toSubsetFonts: ToSubsetFonts = (toSubsetOptions, targetFormat) => {
   return new Promise((resolve, reject) => {
     subsetFont(
-      readFileSync(toSubsetOptions.ttfTargetPath),
+      readFileSync(toSubsetOptions.targetFontPath),
       toSubsetOptions.subsetItems,
-      { targetFormat: "sfnt" }
+      { targetFormat: targetFormat }
     )
       .then((result: any) => {
         return resolve(result);
@@ -61,7 +59,7 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
     throw new Error("no fontName specified, webfont task won't work.");
   }
 
-  const ttfBuffer: string = await toSubsetFonts(toTtfOptions);
+  const ttfBuffer: string = await toSubsetFonts(toTtfOptions, "sfnt");
 
   const result: SubsetResult = {
     webfonts: [],
@@ -98,12 +96,12 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
   }
 
   if (formats.includes("woff")) {
-    const woff = Buffer.from(ttf2woff(ttfBuffer, options).buffer);
+    const woff = await toSubsetFonts(toTtfOptions, "woff");
     pushToResult("woff", woff);
   }
 
   if (formats.includes("woff2")) {
-    const woff2 = await ttf2woff2(ttfBuffer);
+    const woff2 = await toSubsetFonts(toTtfOptions, "woff2");
     pushToResult("woff2", woff2);
   }
 

@@ -18,7 +18,7 @@ export declare type SubsetResult = {
 };
 
 export type SubsetTask = {
-  ttfTargetPath: string;
+  targetFontPath: string;
   subsetItems: string;
   style: Style;
   context: MakeFontContext;
@@ -28,9 +28,8 @@ export type Format = "woff" | "woff2" | "ttf" | "eot";
 export type Formats = Array<Format>;
 
 export type ToSubsetFontsOptions = {
-  formats: Formats;
   subsetItems: string;
-  ttfTargetPath: string;
+  targetFontPath: string;
   style: Style;
 };
 

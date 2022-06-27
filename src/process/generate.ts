@@ -61,7 +61,7 @@ const subsetTasks: SubsetTasks = (subsetMeta, styleTtfMap, mfContext) => {
 
     return {
       style: style as Style,
-      ttfTargetPath: styleTtfMap[style],
+      targetFontPath: styleTtfMap[style],
       subsetItems: subsetItems,
       context: mfContext,
     };
