@@ -22,6 +22,7 @@ export declare type FontFaceRenderContext = RenderContextBase & {
   hash?: string | undefined;
   style: Style;
   fontWeight: number | string;
+  taskSubsetItems: any;
 };
 export declare type RenderContext = RenderContextBase & {
   icons: MetaDataset;

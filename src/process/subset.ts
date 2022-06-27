@@ -8,6 +8,7 @@ import {
   SubsetFunc,
   SubsetResult,
   SubsetTask,
+  IconMetaData,
 } from "./types/SubsetFunc";
 import { readFileSync } from "fs";
 
@@ -24,6 +25,15 @@ const getSubsetOptions: GetToSubsetOptions = (wfTask: SubsetTask) => {
   };
 };
 
+const convertUnicode = (unicode: string) => {
+  return unicode.split(",").map((match) => {
+    return match
+      .split("u")
+      .map((code) => String.fromCodePoint(parseInt(code, 16)))
+      .join("");
+  });
+};
+
 type ToSubsetFonts = (
   toTtfSubsetOptions: ToSubsetFontsOptions,
   targetFormat: string
@@ -31,11 +41,15 @@ type ToSubsetFonts = (
 
 const toSubsetFonts: ToSubsetFonts = (toSubsetOptions, targetFormat) => {
   return new Promise((resolve, reject) => {
-    subsetFont(
-      readFileSync(toSubsetOptions.targetFontPath),
-      toSubsetOptions.subsetItems,
-      { targetFormat: targetFormat }
-    )
+    const unicodeLiteral = toSubsetOptions.subsetItems
+      .map((subsetItem: IconMetaData) => {
+        return convertUnicode(subsetItem.metadata.unicode as string);
+      })
+      .flat(2)
+      .join("");
+    subsetFont(readFileSync(toSubsetOptions.targetFontPath), unicodeLiteral, {
+      targetFormat: targetFormat,
+    })
       .then((result: any) => {
         return resolve(result);
       })
@@ -71,9 +85,6 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
     fontFileName = !context.hasMultipleStyles
       ? context.fontFileName
       : `${context.originalCSSPrefix}-${style}-${fontWeight}`,
-    fontFaceFileName = !context.hasMultipleStyles
-      ? getFontFaceFileName(context.fontFileName)
-      : `${context.originalCSSPrefix}-${style}`,
     formats = options.formats.map((format) => {
       return format.toLowerCase();
     });
@@ -118,11 +129,17 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
     style: style,
     fontWeight: fontWeight,
     ...(addHashInFontUrl ? { hash: result.hash } : {}),
+    taskSubsetItems: subsetTask.subsetItems,
   };
 
   // creating font-face scss files
-  const fontFaceFileFullName = `${fontFaceFileName}.scss`,
-    content = renderEnv.render(`font-face.njk`, fontFaceCtx);
+  const fontFaceFileName = !context.hasMultipleStyles
+      ? getFontFaceFileName(context.fontFileName)
+      : `${context.originalCSSPrefix}-${style}`,
+    fontFaceFileFullName = `${fontFaceFileName}.scss`,
+    // todo allow template override
+    templateName = `font-face.njk`,
+    content = renderEnv.render(templateName, fontFaceCtx);
 
   result.scss.push({
     dir: SCSS_FOLDER_NAME,

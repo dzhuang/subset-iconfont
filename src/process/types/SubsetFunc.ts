@@ -2,13 +2,13 @@ import { Style } from "../../types/Metadata";
 import { MakeFontContext } from "./MakeFontContext";
 import { MakeFontBlob } from "./RenderContext";
 
-export declare type GlyphMetadata = {
+export declare type IconData = {
   name: string;
-  unicode?: string[];
+  unicode?: string;
 };
-export declare type GlyphData = {
+export declare type IconMetaData = {
   contents: string;
-  metadata: GlyphMetadata;
+  metadata: IconData;
 };
 export declare type SubsetResult = {
   webfonts: MakeFontBlob[];
@@ -19,7 +19,7 @@ export declare type SubsetResult = {
 
 export type SubsetTask = {
   targetFontPath: string;
-  subsetItems: string;
+  subsetItems: any[];
   style: Style;
   context: MakeFontContext;
 };
@@ -28,7 +28,7 @@ export type Format = "woff" | "woff2" | "ttf" | "eot";
 export type Formats = Array<Format>;
 
 export type ToSubsetFontsOptions = {
-  subsetItems: string;
+  subsetItems: any[];
   targetFontPath: string;
   style: Style;
 };

@@ -8,12 +8,7 @@ import {
 } from "./types/RenderContext";
 import { MakeFontResult } from "./types/MakeFontResult";
 import { MakeFontContext } from "./types/MakeFontContext";
-import {
-  Formats,
-  GlyphData,
-  SubsetResult,
-  SubsetTask,
-} from "./types/SubsetFunc";
+import { Formats, SubsetResult, SubsetTask } from "./types/SubsetFunc";
 
 import subset from "./subset";
 import render from "./render";
@@ -27,16 +22,6 @@ type SubsetTasks = (
 const subsetTasks: SubsetTasks = (subsetMeta, styleTtfMap, mfContext) => {
   const groupedIcons: Partial<Record<Style, any>> = {};
 
-  // todo: find duplicate unicode
-  const convertUnicode = (unicode: string) => {
-    return unicode.split(",").map((match) => {
-      return match
-        .split("u")
-        .map((code) => String.fromCodePoint(parseInt(code, 16)))
-        .join("");
-    });
-  };
-
   Object.entries(subsetMeta).map(([iconName, attributes]) => {
     // grouping icons into tasks by fa font style
     attributes.svgDataObjects.map((svgDataObj) => {
@@ -44,21 +29,14 @@ const subsetTasks: SubsetTasks = (subsetMeta, styleTtfMap, mfContext) => {
       (groupedIcons[style] = groupedIcons[style] || []).push({
         metadata: {
           name: iconName,
-          unicode: convertUnicode(attributes.unicode as string),
+          unicode: attributes.unicode,
         },
         contents: svgDataObj.svgData,
       });
     });
   });
 
-  return Object.entries(groupedIcons).map(([style, glyphsData]) => {
-    const subsetItems = glyphsData
-      .map((glyphData: GlyphData) => {
-        return glyphData.metadata.unicode;
-      })
-      .flat(2)
-      .join("");
-
+  return Object.entries(groupedIcons).map(([style, subsetItems]) => {
     return {
       style: style as Style,
       targetFontPath: styleTtfMap[style],
