@@ -21,29 +21,9 @@ Subset multiple iconfont packages and generate CSS/SCSS.
 npm install --save-dev subset-iconfont
 ```
 
-## Usage
+## Basic Usage
 
-### Standalone mode
-
-Subset from a single iconfont, for example:
-
-```js
-// npm install -D @mdi/font @mdi/svg
-
-import { MdiProvider } from 'subset-iconfont';
-
-const mdi = new MdiProvider(['plus', 'circle', 'check'], {
-  formats: ['ttf', 'woff2'],
-});
-
-mdi.makeFonts('./outputDir').then((result) => {
-  console.log('Done!');
-});
-```
-
-### Combination mode
-
-Subset from multiple iconfonts, and combine the css/scss files, for example:
+Subset from multiple iconfonts, and combine the css/scss files (Combination mode, see Standalone mode below), for example:
 
 ```js
 // npm install -D @fortawesome/fontawesome-free @mdi/font @mdi/svg
@@ -60,73 +40,63 @@ subsetIconfont([mdi, fa], './outputDir', { formats: ['ttf', 'woff2'] }).then(
 );
 ```
 
-## API
+Or run
 
-### subset `provider`
+```shell
+npm install --save-dev @fortawesome/fontawesome-free @mdi/font @mdi/svg bootstrap-icons material-icons @material-design-icons/svg
+npm run demo
+```
 
-##### `Provider(subsetItem[], options).makeFonts(outputDir) => Promise<MakeFontResult>`
+## `SubsetProvider`
 
-- Example:
+The process runs on a series of `SubsetProvider` which are constructors for different iconfont to be subset. Available SubsetProviders include:
 
-  ```js
-  // npm install -D @fortawesome/fontawesome-free @mdi/font @mdi/svg
+- `FaFreeProvider`
+  - Source: [FontAwesome Free fonts](https://github.com/FortAwesome/Font-Awesome) by @fontawesome
+  - License: [Font Awesome Free License](https://fontawesome.com/license/free)
+  - Required npm package: `@fortawesome/fontawesome-free`
+  - styles: `solid`, `regular`, `brands` allowed by the Fontawesome Free license
+- `MdiProvider`
+  - Source: [Material Design Icons](https://materialdesignicons.com/) by Austin Andrews
+  - License: [MIT license](https://github.com/Templarian/MaterialDesign/blob/master/LICENSE)
+  - Required npm packages: `@mdi/font` and `@mdi/svg`
+  - Note: many of the icons have a `outline` variant, which will be included in the result when subsetting. For example, `plus-outline` will also included if `plus` is to be subset. We do not use a `outline` style because the variants were assigned different `unicode` values.
+- `BiProvider`
+  - Source: [Bootstrap Icons](https://icons.getbootstrap.com/) by The Bootstrap Authors
+  - License: [MIT license](https://github.com/twbs/icons/blob/main/LICENSE.md)
+  - Required npm package: `bootstrap-icons`.
+  - styles: `outlined`, `filled`, `rounded`, `sharp` and `two-tone`
+- `MiProvider`
+  - Source: [Google Material Icons](https://fonts.google.com/icons) npm packages unofficially maintained @marella
+  - License: [Apache License version 2.0](https://github.com/marella/material-icons/blob/main/LICENSE)
+  - Required npm packages: `material-icons` and `@material-design-icons/svg`
 
-  import { MdiProvider, FaFreeProvider } from 'subset-iconfont';
+Note: For provider with styles properties, the program will extract all available style of that icon.
 
-  const mdi = new MdiProvider(['plus', 'circle', 'check']),
-    fa = new FaFreeProvider(['clock', '500px']);
-  ```
+Params to create a `ProviderInstance` are:
 
-  where `mdi` and `fa` are what we called `SubsetProvider` instances.
-
-#### `Provider`
-
-- Type: `SubsetProvider`
-- Descriptions: A constructor for the iconfont to be subset.
-- Available SubsetProvider
-  - `FaFreeProvider`
-    - Source: [FontAwesome Free fonts](https://github.com/FortAwesome/Font-Awesome) by @fontawesome
-    - License: [Font Awesome Free License](https://fontawesome.com/license/free)
-    - Required npm package: `@fortawesome/fontawesome-free`
-    - styles: `solid`, `regular`, `brands` allowed by the Fontawesome Free license
-  - `MdiProvider`
-    - Source: [Material Design Icons](https://materialdesignicons.com/) by Austin Andrews
-    - License: [MIT license](https://github.com/Templarian/MaterialDesign/blob/master/LICENSE)
-    - Required npm packages: `@mdi/font` and `@mdi/svg`
-    - Note: many of the icons have a `outline` variant, which will be included in the result when subsetting. For example, `plus-outline` will also included if `plus` is to be subset. We do not use a `outline` style because the variants were assigned different `unicode` values.
-  - `BiProvider`
-    - Source: [Bootstrap Icons](https://icons.getbootstrap.com/) by The Bootstrap Authors
-    - License: [MIT license](https://github.com/twbs/icons/blob/main/LICENSE.md)
-    - Required npm package: `bootstrap-icons`.
-    - styles: `outlined`, `filled`, `rounded`, `sharp` and `two-tone`
-  - `MiProvider`
-    - Source: [Google Material Icons](https://fonts.google.com/icons) npm packages unofficially maintained @marella
-    - License: [Apache License version 2.0](https://github.com/marella/material-icons/blob/main/LICENSE)
-    - Required npm packages: `material-icons` and `@material-design-icons/svg`
-- Note:
-  For provider with styles properties, the program will extract all available style of that icon.
-
-#### `subsetItem[]`
+### `subsetItem[]`
 
 - Type: array of `string`
 - Descriptions: the icon names that will be subset from the provider. Non-existing icons will be ignored and warn in the log.
+- Note: To extra all the icons available, use `['__all__']` as the `subsetItem[]`.
 
-#### `options`
+### `options`
 
-##### `formats`
+#### `formats`
 
 - Type: `array`,
 - Default: `['woff2', 'ttf']`,
 - Possible values: `ttf, eot, woff, woff2`,
 - Description: Font file formats to generate.
 
-##### `fontName`
+#### `fontName`
 
 - Type: `string`
 - Default: the value from the provider.
 - Description: The font family name you want to use.
 
-##### `fontFileName`
+#### `fontFileName`
 
 - Type: `string`
 - Default: The value from the provider.
@@ -138,37 +108,37 @@ subsetIconfont([mdi, fa], './outputDir', { formats: ['ttf', 'woff2'] }).then(
   `cssPrefix` property of the provider, `style` used and `fontWeight` of that style, while the font-face
   file base name will be the concatenation of `cssPrefix` and `style`.
 
-##### `prefix`
+#### `prefix`
 
 - Type: `string`
 - Default: The value from the provider.
 - Description: The prefix in the css class when using the icon.
 
-##### `webfontDir`
+#### `webfontDir`
 
 - Type: `string`
 - Default: `webfonts`
 - Description: The name of the sub-directory which the font files will be written to.
 
-##### `generateMinCss`
+#### `generateMinCss`
 
 - Type: `boolean`
 - Default: `true`
 - Description: Whether generate a minified css version for each css files generated.
 
-##### `generateCssMap`
+#### `generateCssMap`
 
 - Type: `boolean`
 - Default: `true`
 - Description: Whether generate a .map file for each css files generated.
 
-##### `LoggerOptions`
+#### `LoggerOptions`
 
 - Type: `winston.LoggerOptions`
 - Default: `{level: 'warn'}`
 - Description: The options of `winston` logger. We implemented a Console transport, but that can be extended. See [winston](https://github.com/winstonjs/winston) for more information.
 
-##### `writeOutFiles`
+#### `writeOutFiles`
 
 - Type: `array`
 - Default: `[‘webfonts‘, ‘scss‘, ‘css‘, ‘licenses‘, 'web', 'metadata']`
@@ -180,19 +150,41 @@ subsetIconfont([mdi, fa], './outputDir', { formats: ['ttf', 'woff2'] }).then(
   - `web`: An `index.html` file which presenting all the subset icons in a web page
   - `metadata`: The metadata of all the subset icons
 
-##### `addHashInFontUrl`
+#### `addHashInFontUrl`
 
 - Type: `boolean`
 - Default: `true`
 - Description: Whether adding font file hash in font face CSS/SCSS file. This is useful to
   update client caching of font files.
 
+## API
+
 ### Standalone mode
+
+##### `ProviderInstance.makeFonts(outputDir) => Promise<MakeFontResult>`
+
+By `Standalone`, we mean subset from a `ProviderInstance`.
 
 #### `outputDir`
 
 - Type: `string`
 - Description: A path string where the output files are expected to be written to.
+
+For example:
+
+```js
+// npm install -D @mdi/font @mdi/svg
+
+import { MdiProvider } from 'subset-iconfont';
+
+const mdi = new MdiProvider(['plus', 'circle', 'check'], {
+  formats: ['ttf', 'woff2'],
+});
+
+mdi.makeFonts('./outputDir').then((result) => {
+  console.log('Done!');
+});
+```
 
 ### Combination mode
 
@@ -213,15 +205,22 @@ subsetIconfont([mdi, fa], './outputDir', { formats: ['ttf', 'woff2'] }).then(
 The `options` for combination mode has the same options as that of the standalone mode, with an extra option
 `outputPackages`.
 
-#### `outputPackages`
+##### `outputPackages`
 
 - Type: `boolean`
 - Default: `false`
 - Description: Whether output the subset result of each iconfont. If `true`, there will be a `packages` directory
   which contains all the subset results of the combined packages.
 
-Notice: `fontName`, `prefix` under Combination mode will override the options from `SubsetProvider` instances
+If not configured, `fontName` will use `"Subset Iconfont"`, and `prefix` will use `"si"`,
+and `fontFileName` will use `"subset-iconfont"`, as default value.
+
+Notice: `fontName`, `prefix` under combination mode will override the options from `SubsetProvider` instances
 so that we can use all subset icons in a consistent way irrespective of which icon comes from which provider (package).
+
+## Usage of Icons generate
+
+See generated `index.html` and FontAwesome free [documentation](https://fontawesome.com/docs/web/setup/host-yourself/webfonts) for details
 
 ## Roadmap
 

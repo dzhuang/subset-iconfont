@@ -2,8 +2,8 @@ import { Style } from '../types/Metadata';
 import { WriteOutFiles } from '../process/types/RenderContext';
 import { Formats } from '../process/types/SubsetFunc';
 
-export const DEFAULT_COMBINE_FILE_NAME = 'IconfontSubset';
-export const DEFAULT_COMBINE_FONT_NAME = 'Iconfont Subset';
+export const DEFAULT_COMBINE_FILE_NAME = 'subset-iconfont';
+export const DEFAULT_COMBINE_FONT_NAME = 'Subset Iconfont';
 export const DEFAULT_COMBINE_PREFIX = 'si';
 
 export const PACKAGES_OUTPUT_DIR = 'packages';
