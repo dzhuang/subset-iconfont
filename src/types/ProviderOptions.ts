@@ -14,6 +14,4 @@ export declare type ProviderOptions = {
   generateCssMap?: boolean;
   loggerOptions?: LoggerOptions;
   writeOutFiles?: WriteOutFiles;
-  startUnicode?: number;
-  resetUnicode?: boolean;
 };

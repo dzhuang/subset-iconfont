@@ -8,7 +8,6 @@ export declare type MakeFontBlob = {
   dir: string;
   name: string;
   data: Buffer | string;
-  hash?: string;
 };
 export declare type WriteOutFile = BlobCategory | "web" | "metadata";
 export declare type WriteOutFiles = Array<WriteOutFile>;
@@ -36,5 +35,4 @@ export declare type RenderContext = RenderContextBase & {
   logger: Logger;
   blobObject: BlobObject;
   writeOutFiles: WriteOutFiles;
-  endUnicode: number;
 };

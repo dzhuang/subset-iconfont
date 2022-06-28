@@ -1,8 +1,9 @@
 import { Logger } from "../../types/Logger";
 import { ProviderOptions } from "../../types/ProviderOptions";
+import { Style2FontFileMap } from "../../types/Provider";
 
 export type MakeFontContext = {
-  styleTtfMap: { [key: string]: string };
+  style2FontFileMap: Style2FontFileMap;
   options: ProviderOptions;
   fontFileName: string;
   originalCSSPrefix: string;

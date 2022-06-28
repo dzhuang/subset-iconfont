@@ -4,7 +4,7 @@ import { Formats } from "../process/types/SubsetFunc";
 
 export const DEFAULT_COMBINE_FILE_NAME = "IconfontSubset";
 export const DEFAULT_COMBINE_FONT_NAME = "Iconfont Subset";
-export const DEFAULT_COMBINE_PREFIX = "ss";
+export const DEFAULT_COMBINE_PREFIX = "si";
 
 export const PACKAGES_OUTPUT_DIR = "packages";
 export const WEBFONTS_DIR_NAME = "webfonts";
@@ -26,6 +26,13 @@ export const MI_SVG_PACKAGE_NAME = "@material-design-icons/svg";
 export const MI_DEFAULT_CSS_PREFIX = "mi";
 export const MI_DEFAULT_FONT_NAME = "Material Icons";
 export const MI_DEFAULT_FONT_FILE_NAME = "material-icons";
+export const MI_STYLES: Style[] = [
+  "filled",
+  "outlined",
+  "round",
+  "sharp",
+  "two-tone",
+];
 
 export const FONT_AWESOME_FREE_PACKAGE_NAME = "@fortawesome/fontawesome-free";
 export const FONT_AWESOME_FREE_DEFAULT_CSS_PREFIX = "fa";
@@ -81,7 +88,6 @@ export const STYLE_FONT_WEIGHT_MAP: Record<Style, number | string> = {
   solid: 900,
   brands: 400,
   normal: 400,
-  outline: 400,
   filled: 400,
   outlined: 400,
   round: 400,
@@ -90,5 +96,3 @@ export const STYLE_FONT_WEIGHT_MAP: Record<Style, number | string> = {
 };
 
 export const DEFAULT_STYLE: Style = "normal";
-
-export const DEFAULT_START_UNICODE = 0xea01;

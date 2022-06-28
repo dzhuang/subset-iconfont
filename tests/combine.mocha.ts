@@ -6,7 +6,7 @@ const assert = require("assert");
 const fs = require("fs");
 const path = require("path");
 import {
-  iconFontSubset,
+  subsetIconfont,
   MdiProvider,
   FaFreeProvider,
   MiProvider,
@@ -75,7 +75,7 @@ describe("General tests", () => {
     assert.throws(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      iconFontSubset("foo");
+      subsetIconfont("foo");
     }, ConfigError);
   });
 
@@ -83,17 +83,19 @@ describe("General tests", () => {
     assert.throws(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      iconFontSubset(["foo", "bar"]);
+      subsetIconfont(["foo", "bar"]);
     }, ConfigError);
   });
 
   it("should not work for invalid options (not an object)", () => {
-    const mdi = new MdiProvider(["plus"]);
+    const mdi = new MdiProvider(["plus"]),
+      tempDir = getTemp();
     assert.throws(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      iconFontSubset([mdi], "./tmp", "foo");
+      subsetIconfont([mdi], tempDir.name, "foo");
     }, ConfigError);
+    tempDir.removeCallback();
   });
 
   it("should work for mdi", (done) => {
@@ -346,7 +348,7 @@ describe("scss render tests", () => {
     const outputDir = tempDir.name;
 
     const mdi = new MdiProvider(["plus"]);
-    iconFontSubset([mdi], outputDir)
+    subsetIconfont([mdi], outputDir)
       .then(() => {
         const rootMapObject = JSON.parse(
           fs
@@ -468,7 +470,7 @@ describe("result tests", () => {
     const mdi = new MdiProvider(["plus"]),
       tempDir = getTemp();
 
-    iconFontSubset([mdi], tempDir.name, { formats: ["ttf"] })
+    subsetIconfont([mdi], tempDir.name, { formats: ["ttf"] })
       .then((result) => {
         const namePrefixes = [MDI_DEFAULT_FONT_FILE_NAME];
         namePrefixes.forEach((namePrefix) => {
@@ -495,7 +497,7 @@ describe("result tests", () => {
     const mdi = new MdiProvider(["plus"]),
       tempDir = getTemp();
 
-    iconFontSubset([mdi], tempDir.name, {
+    subsetIconfont([mdi], tempDir.name, {
       formats: ["ttf", "woff2"],
       addHashInFontUrl: false,
     })
@@ -524,10 +526,11 @@ describe("result tests", () => {
 
 describe("Options validation", () => {
   it("should not work for emtpy formats", async () => {
-    const mdi = new MdiProvider(["plus"]);
+    const mdi = new MdiProvider(["plus"]),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      await iconFontSubset([mdi], "./tmp", { formats: [] });
+      await subsetIconfont([mdi], tempDir.name, { formats: [] });
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -535,15 +538,17 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for wrong type formats (not array)", async () => {
-    const mdi = new MdiProvider(["plus"]);
+    const mdi = new MdiProvider(["plus"]),
+      tempDir = getTemp();
     let thrown = false;
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await iconFontSubset([mdi], "./tmp", { formats: "ttf" });
+      await subsetIconfont([mdi], tempDir.name, { formats: "ttf" });
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -551,15 +556,19 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for unknown formats", async () => {
-    const mdi = new MdiProvider(["plus"]);
+    const mdi = new MdiProvider(["plus"]),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      await iconFontSubset([mdi], "./tmp", { formats: ["unknown", "ttf"] });
+      await subsetIconfont([mdi], tempDir.name, {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        formats: ["unknown", "ttf"],
+      });
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -567,6 +576,7 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should work with uppercase format", (done) => {
@@ -635,12 +645,13 @@ describe("Options validation", () => {
   });
 
   it("should not work for non-string prefix", async () => {
-    const mdi = new MdiProvider(["plus"]);
+    const mdi = new MdiProvider(["plus"]),
+      tempDir = getTemp();
     let thrown = false;
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await iconFontSubset([mdi], "./tmp", { prefix: 1234 });
+      await subsetIconfont([mdi], tempDir.name, { prefix: 1234 });
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -648,13 +659,15 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for emtpy prefix", async () => {
-    const mdi = new MdiProvider(["plus"], { prefix: "" });
+    const mdi = new MdiProvider(["plus"], { prefix: "" }),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      await mdi.makeFonts("./tmp");
+      await mdi.makeFonts(tempDir.name);
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -662,13 +675,15 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for emtpy prefix (trim)", async () => {
-    const mdi = new MdiProvider(["plus"], { prefix: "    " });
+    const mdi = new MdiProvider(["plus"], { prefix: "    " }),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      await mdi.makeFonts("./tmp");
+      await mdi.makeFonts(tempDir.name);
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -676,13 +691,15 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for emtpy webfontDir", async () => {
-    const mdi = new MdiProvider(["plus"], { webfontDir: "   " });
+    const mdi = new MdiProvider(["plus"]),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      await iconFontSubset([mdi], "./tmp");
+      await subsetIconfont([mdi], tempDir.name, { webfontDir: "   " });
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -690,13 +707,15 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for emtpy fontName", async () => {
-    const mdi = new MdiProvider(["plus"], { fontName: "   " });
+    const mdi = new MdiProvider(["plus"], { fontName: "   " }),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      await mdi.makeFonts("./tmp");
+      await mdi.makeFonts(tempDir.name);
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -704,13 +723,15 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 
   it("should not work for emtpy fontFileName", async () => {
-    const mdi = new MdiProvider(["plus"], { fontFileName: "   " });
+    const mdi = new MdiProvider(["plus"], { fontFileName: "   " }),
+      tempDir = getTemp();
     let thrown = false;
     try {
-      await mdi.makeFonts("./tmp");
+      await mdi.makeFonts(tempDir.name);
     } catch (e) {
       assert.throws(() => {
         throw e;
@@ -718,5 +739,6 @@ describe("Options validation", () => {
       thrown = true;
     }
     if (!thrown) throw new Error("Expected error not raise");
+    tempDir.removeCallback();
   });
 });

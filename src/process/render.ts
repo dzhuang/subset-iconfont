@@ -22,6 +22,7 @@ import {
 } from "./types/RenderContext";
 import { WebRenderContext } from "./types/WebRenderContext";
 import { MakeFontResult } from "./types/MakeFontResult";
+import * as Buffer from "buffer";
 
 const sass = require("node-sass");
 const pkjJson = require("../../package.json");
@@ -115,7 +116,7 @@ const renderCSS = (context: RenderContext, logger: Logger) => {
           sourceRoot: `../${SCSS_FOLDER_NAME}`,
           outFile: pathJoin(cssPath, `${cssObj.fName}.${cssObj.extension}`),
         },
-        (err: any, result: any) => {
+        (err: any, result: { [key: string]: string | Buffer }) => {
           /* istanbul ignore if */
           if (err) {
             reject(err);
@@ -125,11 +126,11 @@ const renderCSS = (context: RenderContext, logger: Logger) => {
             for (const [key, blob] of Object.entries(result)) {
               if (key === "stats") continue;
               const _name = key === "css" ? baseName : `${baseName}.map`,
-                hash = key === "css" ? createHash(blob as string) : undefined;
+                hash = key === "css" ? createHash(blob) : undefined;
               context.blobObject.css.push({
                 name: _name,
                 dir: CSS_FOLDER_NAME,
-                data: blob as string | Buffer,
+                data: blob,
                 ...(hash ? { hash: hash } : {}),
               });
             }
@@ -205,20 +206,20 @@ const writeBlobs = (
     let cssHash;
     for (const cssBlobObj of context.blobObject.css) {
       if (cssBlobObj.name === `${COMBINED_CSS_NAME}.css`) {
-        cssHash = cssBlobObj.hash;
+        cssHash = createHash(cssBlobObj.data);
         break;
       }
     }
 
     const webRenderContext: WebRenderContext = {
-        prefix: context.prefix as string,
+        prefix: context.prefix,
         icons: context.icons,
         brandIcon: brandIcon,
         npmPackage: pkjJson.name,
         version: pkjJson.version,
         url: pkjJson.repository.url.replace("git+", ""),
         author: pkjJson.author,
-        fontName: context.fontName as string,
+        fontName: context.fontName,
         cacheString: cssHash,
       },
       indexHtml = renderEnv.render("web.njk", webRenderContext);

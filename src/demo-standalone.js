@@ -5,11 +5,13 @@ const {
   MdiProvider,
   BiProvider,
   MiProvider,
-} = require("./dist");
+} = require("./index");
+
+const outputDir = "./output-standalone";
 
 const mdi = new MdiProvider(["plus"]);
 
-mdi.makeFonts("./output-standalone");
+mdi.makeFonts(outputDir);
 
 const fa = new FaFreeProvider(
   [
@@ -24,14 +26,14 @@ const fa = new FaFreeProvider(
   // { loggerOptions: { level: "debug" } }
 );
 
-fa.makeFonts("./output-standalone");
+fa.makeFonts(outputDir);
 
 const bi = new BiProvider([
   "xbox",
   // "__all__"
 ]);
 
-bi.makeFonts("./output-standalone");
+bi.makeFonts(outputDir);
 
 const mi = new MiProvider(
   [
@@ -45,4 +47,4 @@ const mi = new MiProvider(
   { formats: ["ttf", "woff2"] }
 );
 
-mi.makeFonts("./output-standalone");
+mi.makeFonts(outputDir);

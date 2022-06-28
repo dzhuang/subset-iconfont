@@ -19,14 +19,12 @@ import { ProviderOptions } from "../types/ProviderOptions";
  */
 class BiProvider extends SubsetProvider implements ProviderInterface {
   packageName = BOOTSTRAP_ICON_PACKAGE_NAME;
-  descent = 48;
-  fontHeight = 512;
   cssPrefix = BOOTSTRAP_ICON_CSS_PREFIX;
   fontName = BOOTSTRAP_ICON_FONT_NAME;
   fontFileName = BOOTSTRAP_ICONS_FONT_FILE_NAME;
   hasMultipleStyles = false;
 
-  styleTtfMap = {
+  style2FontFileMap = {
     [DEFAULT_STYLE]: "font/fonts/bootstrap-icons.woff2",
   };
 
@@ -46,7 +44,7 @@ class BiProvider extends SubsetProvider implements ProviderInterface {
 
     const meta = JSON.parse(readFileSync(_metaPath).toString());
 
-    const ret: { [key: string]: any } = {};
+    const ret: { [key: SubsetItem]: any } = {};
     Object.entries(meta).map(([key, value]) => {
       ret[key] = { unicode: (value as any).toString(16) };
     });
@@ -54,7 +52,7 @@ class BiProvider extends SubsetProvider implements ProviderInterface {
     return ret as MetaDataset;
   }
 
-  normalizeIconMeta(iconName: string): MetaData {
+  normalizeIconMeta(iconName: SubsetItem): MetaData {
     const iconData = this.allMetaData[iconName],
       unicode = iconData.unicode;
 

@@ -4,7 +4,7 @@ import { MakeFontBlob } from "./RenderContext";
 
 export declare type IconData = {
   name: string;
-  unicode?: string;
+  unicode: string;
 };
 export declare type IconMetaData = {
   contents: string;

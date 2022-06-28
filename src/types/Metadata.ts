@@ -1,3 +1,7 @@
+import { SubsetItem } from "./SubsetItem";
+
+export type AllMetaData = { [key: SubsetItem]: any };
+
 export declare type Style =
   | "thin"
   | "light"
@@ -5,7 +9,6 @@ export declare type Style =
   | "solid"
   | "brands"
   | "normal"
-  | "outline"
   | "filled"
   | "outlined"
   | "round"
@@ -25,4 +28,4 @@ export declare type MetaData = {
   originalName?: string;
   metaFromPackage?: { [key: string]: any };
 };
-export declare type MetaDataset = Record<string, MetaData>;
+export declare type MetaDataset = Record<SubsetItem, MetaData>;

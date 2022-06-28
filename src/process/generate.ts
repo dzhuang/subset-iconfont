@@ -1,35 +1,40 @@
-import { DEFAULT_STYLE } from "../providers/constants";
+import {
+  DEFAULT_STYLE,
+  DEFAULT_WRITE_OUT_FILES,
+  WEBFONTS_DIR_NAME,
+} from "../providers/constants";
 import { getFontWeight } from "./utils";
 import { MetaDataset, Style } from "../types/Metadata";
-import {
-  BlobObject,
-  RenderContext,
-  WriteOutFiles,
-} from "./types/RenderContext";
+import { BlobObject, RenderContext } from "./types/RenderContext";
 import { MakeFontResult } from "./types/MakeFontResult";
 import { MakeFontContext } from "./types/MakeFontContext";
 import { Formats, SubsetResult, SubsetTask } from "./types/SubsetFunc";
 
 import subset from "./subset";
 import render from "./render";
+import { Style2FontFileMap } from "../types/Provider";
 
 type SubsetTasks = (
   subsetMeta: MetaDataset,
-  styleTtfMap: { [key: string]: string },
+  style2FontFileMap: Style2FontFileMap,
   mfContext: MakeFontContext
 ) => SubsetTask[];
 
-const subsetTasks: SubsetTasks = (subsetMeta, styleTtfMap, mfContext) => {
+const subsetTasks: SubsetTasks = (
+  subsetMetaSet,
+  style2FontFileMap,
+  mfContext
+) => {
   const groupedIcons: Partial<Record<Style, any>> = {};
 
-  Object.entries(subsetMeta).map(([iconName, attributes]) => {
+  Object.entries(subsetMetaSet).map(([iconName, metadata]) => {
     // grouping icons into tasks by fa font style
-    attributes.svgDataObjects.map((svgDataObj) => {
+    metadata.svgDataObjects.map((svgDataObj) => {
       const style = svgDataObj.style;
       (groupedIcons[style] = groupedIcons[style] || []).push({
         metadata: {
           name: iconName,
-          unicode: attributes.unicode,
+          unicode: metadata.unicode,
         },
         contents: svgDataObj.svgData,
       });
@@ -37,9 +42,14 @@ const subsetTasks: SubsetTasks = (subsetMeta, styleTtfMap, mfContext) => {
   });
 
   return Object.entries(groupedIcons).map(([style, subsetItems]) => {
+    const targetFontPath = style2FontFileMap[style as Style];
+    if (!targetFontPath) {
+      throw new Error(`Font file path to style "${style}" is undefined.`);
+    }
+
     return {
       style: style as Style,
-      targetFontPath: styleTtfMap[style],
+      targetFontPath: targetFontPath,
       subsetItems: subsetItems,
       context: mfContext,
     };
@@ -56,7 +66,7 @@ const generateFont: GenerateFont = async (outputDir, subsetMeta, mfContext) => {
   const options = mfContext.options,
     fontFileName = mfContext.fontFileName,
     logger = mfContext.logger,
-    styleTtfMap = mfContext.styleTtfMap,
+    styleTtfMap = mfContext.style2FontFileMap,
     formats = options.formats as Formats;
 
   const wfTasks = subsetTasks(subsetMeta, styleTtfMap, mfContext);
@@ -88,7 +98,7 @@ const generateFont: GenerateFont = async (outputDir, subsetMeta, mfContext) => {
         fontName: options.fontName as string,
         formats: formats,
         prefix: options.prefix as string,
-        webfontDir: options.webfontDir as string,
+        webfontDir: options.webfontDir || WEBFONTS_DIR_NAME,
         icons: subsetMeta,
         fontWeightDefault: getFontWeight(DEFAULT_STYLE),
         fontFileName: fontFileName,
@@ -104,8 +114,7 @@ const generateFont: GenerateFont = async (outputDir, subsetMeta, mfContext) => {
         logger: logger,
         license: mfContext.licenseContent,
         blobObject: blobObj,
-        writeOutFiles: options.writeOutFiles as WriteOutFiles,
-        endUnicode: options.startUnicode as number,
+        writeOutFiles: options.writeOutFiles || DEFAULT_WRITE_OUT_FILES,
       };
 
       // render scss/css files

@@ -55,20 +55,6 @@ const validateOptionString = (
   }
 };
 
-export const validateOptionNumber = (
-  options: any,
-  option: string,
-  allowUndefined: boolean
-) => {
-  const optionValue = (options as { [key: string]: any })[option];
-  if ("undefined" === typeof optionValue && allowUndefined) {
-    return;
-  }
-  if ("number" !== typeof optionValue) {
-    throw new ConfigError(`option "${option}" should be a number.`);
-  }
-};
-
 const validateFormats = (formats: any) => {
   if (!Array.isArray(formats)) {
     throw new ConfigError(

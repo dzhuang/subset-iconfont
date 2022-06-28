@@ -5,6 +5,7 @@ import {
   MI_DEFAULT_FONT_NAME,
   MI_FONT_PACKAGE_NAME,
   MI_SVG_PACKAGE_NAME,
+  MI_STYLES,
 } from "./constants";
 import { join as pathJoin, basename } from "path";
 import { readFileSync, readdirSync } from "fs";
@@ -18,8 +19,6 @@ import { ProviderOptions } from "../types/ProviderOptions";
  */
 class MiProvider extends SubsetProvider implements ProviderInterface {
   packageName = MI_FONT_PACKAGE_NAME;
-  descent = 0;
-  fontHeight = 1024;
   cssPrefix = MI_DEFAULT_CSS_PREFIX;
   fontName = MI_DEFAULT_FONT_NAME;
   fontFileName = MI_DEFAULT_FONT_FILE_NAME;
@@ -28,7 +27,7 @@ class MiProvider extends SubsetProvider implements ProviderInterface {
     super(subset, options);
   }
 
-  styleTtfMap = {
+  style2FontFileMap = {
     filled: "iconfont/material-icons.woff2",
     outlined: "iconfont/material-icons-outlined.woff2",
     round: "iconfont/material-icons-round.woff2",
@@ -46,7 +45,7 @@ class MiProvider extends SubsetProvider implements ProviderInterface {
 
     let allNames: string[] = [];
 
-    ["filled", "outlined", "round", "sharp", "two-tone"].forEach((style) => {
+    MI_STYLES.forEach((style) => {
       const fileNames = readdirSync(pathJoin(svgDir, style)).map((fName) => {
         return basename(fName, ".svg").replace(/_/g, "-");
       });
@@ -68,7 +67,7 @@ class MiProvider extends SubsetProvider implements ProviderInterface {
     return ret;
   }
 
-  normalizeIconMeta(iconName: string): MetaData {
+  normalizeIconMeta(iconName: SubsetItem): MetaData {
     const node_modules_path = "node_modules";
     const svgDir = pathJoin(node_modules_path, MI_SVG_PACKAGE_NAME);
 
@@ -80,7 +79,7 @@ class MiProvider extends SubsetProvider implements ProviderInterface {
 
     // Because many style are using the same svg data,
     // we only preserve styles which first use the svg
-    ["filled", "outlined", "round", "sharp", "two-tone"].forEach((style) => {
+    MI_STYLES.forEach((style) => {
       const svgData = readFileSync(
         pathJoin(svgDir, style, `${iconName}.svg`.replace(/-/g, "_"))
       ).toString();
@@ -91,11 +90,11 @@ class MiProvider extends SubsetProvider implements ProviderInterface {
       existSvgData.push(svgData);
 
       const svgDataObj = {
-        style: style as Style,
+        style: style,
         svgData: svgData,
       };
       _svgDataObjects.push(svgDataObj);
-      styles.push(style as Style);
+      styles.push(style);
     });
 
     return {

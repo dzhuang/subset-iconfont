@@ -19,7 +19,7 @@ import {
 } from "../src/providers/constants";
 
 import { getFontFaceFileName } from "../src/utils/utils";
-import { iconFontSubset } from "../src";
+import { subsetIconfont } from "../src";
 
 const { sync: mdSync } = require("mkdirp");
 const tmp = require("tmp");
@@ -535,7 +535,7 @@ export const generateCombinedSubsetFont = (
   useTempDir = true
 ) => {
   const [subset, outputDir, options] = getOptions(params, debug, useTempDir);
-  iconFontSubset(subset, outputDir, options)
+  subsetIconfont(subset, outputDir, options)
     .then(() => {
       runCombineModeFilesCheck(outputChecks, outputDir);
     })

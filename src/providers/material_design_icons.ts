@@ -20,16 +20,13 @@ import { ProviderOptions } from "../types/ProviderOptions";
  */
 class MdiProvider extends SubsetProvider implements ProviderInterface {
   packageName = MDI_FONT_PACKAGE_NAME;
-  descent = 0;
-  fontHeight = 1024;
   cssPrefix = MDI_DEFAULT_CSS_PREFIX;
   fontName = MDI_DEFAULT_FONT_NAME;
   fontFileName = MDI_DEFAULT_FONT_FILE_NAME;
   hasMultipleStyles = false;
 
-  styleTtfMap = {
+  style2FontFileMap = {
     [DEFAULT_STYLE]: "fonts/materialdesignicons-webfont.ttf",
-    outline: "fonts/materialdesignicons-webfont.ttf",
   };
 
   constructor(subset: SubsetItem[], options?: ProviderOptions) {
@@ -103,7 +100,7 @@ class MdiProvider extends SubsetProvider implements ProviderInterface {
   }
 
   // styles were using different unicode
-  normalizeIconMeta(iconName: string): MetaData {
+  normalizeIconMeta(iconName: SubsetItem): MetaData {
     const node_modules_path = "node_modules";
     const svgPackageDir = pathJoin(node_modules_path, MDI_SVG_PACKAGE_NAME);
 

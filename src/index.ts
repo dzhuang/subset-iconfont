@@ -10,46 +10,45 @@ import {
   DEFAULT_COMBINE_PREFIX,
   DEFAULT_LOGGER_LEVEL,
   DEFAULT_OUTPUT_FORMATS,
-  DEFAULT_START_UNICODE,
   DEFAULT_WRITE_OUT_FILES,
   PACKAGES_OUTPUT_DIR,
   WEBFONTS_DIR_NAME,
 } from "./providers/constants";
 import { ConfigError } from "./utils/errors";
 import { SubsetProvider } from "./providers/base";
-import { IconfontSubset } from "./types";
+import { SubsetIconfont } from "./types";
 import { RenderContext } from "./process/types/RenderContext";
 import { MakeFontResult } from "./process/types/MakeFontResult";
 
 import render from "./process/render";
 
 /**
- * @name iconFontSubset
+ * @name subsetIconfont
  * @description Extract subset(s) of icons from multiple providers (iconfont npm packages)
  * and generate webfonts for each, along with css/scss, with the Font-Awesome styles.
  * See "./demo-combine.js" for use case examples.
  *
- * @param providerObjects an array of SubsetProvider Objects. Currently, available providers include
+ * @param providerInstances an array of SubsetProvider Objects. Currently, available providers include
  * `MdiProvider`, `FaFreeProvider`, `BiProvider` and `BiProvider`.
  * @param outputDir Output directory of generated webfonts, along with css/scss, metadata and font license,
  * defaults to `./output`.
  * @param options tweaks for further configurations.
  */
-const iconFontSubset: IconfontSubset = (
-  providerObjects,
+const subsetIconfont: SubsetIconfont = (
+  providerInstances,
   outputDir = "./output",
   options = {}
 ) => {
-  if (!Array.isArray(providerObjects)) {
+  if (!Array.isArray(providerInstances)) {
     throw new ConfigError(
-      `subsetObjects must be an array, while got a ${typeof providerObjects}.`
+      `subsetObjects must be an array, while got a ${typeof providerInstances}.`
     );
   }
-  if (!providerObjects.length)
+  if (!providerInstances.length)
     return new Promise((resolve) => {
       return resolve({} as MakeFontResult);
     });
-  providerObjects.forEach((obj: any) => {
+  providerInstances.forEach((obj: any) => {
     if (!(obj instanceof SubsetProvider)) {
       throw new ConfigError(
         `Members in subsetObject must be Provider instance objects, while got a ${typeof obj}: "${obj}".`
@@ -91,42 +90,30 @@ const iconFontSubset: IconfontSubset = (
     loggerOptions = options.loggerOptions,
     prefix = options.prefix || DEFAULT_COMBINE_PREFIX,
     sort = "undefined" === typeof options.sort ? true : options.sort,
-    webfontDir = options.webfontDir || WEBFONTS_DIR_NAME,
-    writeOutFiles = options.writeOutFiles || DEFAULT_WRITE_OUT_FILES,
-    resetUnicode = !!options.resetUnicode;
-
-  let startUnicode = options.startUnicode || DEFAULT_START_UNICODE;
+    webfontDir = options.webfontDir || WEBFONTS_DIR_NAME;
 
   const initializedProviderObjects: SubsetProvider[] = [];
 
-  for (const providerObject of providerObjects) {
+  for (const providerObject of providerInstances) {
     providerObject.setLoggerOptions("level", loggerOptions.level);
     providerObject.setLoggerOptions("silent", loggerOptions.silent);
 
-    // {{{ increment startUnicode for multiple package
-    providerObject.setOptions("startUnicode", startUnicode, true);
-    providerObject.setOptions("resetUnicode", resetUnicode);
     providerObject.setOptions("sort", sort);
-    if (!Object.keys(providerObject.subsetMeta).length) continue;
-
-    startUnicode = (providerObject.options.startUnicode as number) + 1;
-    // }}}
-
-    providerObject.setOptions("fontName", fontName, true);
     providerObject.setOptions("formats", formats);
     providerObject.setOptions("generateCssMap", generateCssMap, true);
     providerObject.setOptions("generateMinCss", generateMinCss, true);
 
     // all fontName and prefix must be consistent. This is required
     // for using icons from multiple packages
+    providerObject.setOptions("fontName", fontName, true);
     providerObject.setOptions("prefix", prefix, true);
 
-    providerObject.setOptions("webfontDir", webfontDir);
+    providerObject.setOptions("webfontDir", webfontDir, true);
 
     // Don't out put any package files if outputPackage is false
     providerObject.setOptions(
       "writeOutFiles",
-      outputPackages ? writeOutFiles : [],
+      outputPackages ? options.writeOutFiles : [],
       !outputPackages
     );
     providerObject.setOptions("addHashInFontUrl", options.addHashInFontUrl);
@@ -161,7 +148,8 @@ const iconFontSubset: IconfontSubset = (
         logger.info("Started combining CSS");
 
         const renderContext: RenderContext = results[0];
-        renderContext.writeOutFiles = writeOutFiles;
+        renderContext.writeOutFiles =
+          options.writeOutFiles || DEFAULT_WRITE_OUT_FILES;
 
         renderContext.fontFileName = fontFileName;
 
@@ -185,15 +173,15 @@ const iconFontSubset: IconfontSubset = (
           logger: logger,
         };
 
-        return render(outputDir, context, logger).then(resolve).catch(reject);
+        return render(outputDir, context, logger)
+          .then((result) => resolve(result))
+          .catch(reject);
       })
       .catch(reject);
-  }).then((result) => {
-    return result as MakeFontResult;
   });
 };
 
-export { iconFontSubset };
+export { subsetIconfont };
 export * from "./types";
 export * from "./providers/providers";
-export default iconFontSubset;
+export default subsetIconfont;

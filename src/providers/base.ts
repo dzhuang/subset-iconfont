@@ -5,31 +5,31 @@ import { ConfigError, WarningError } from "../utils/errors";
 import {
   DEFAULT_LOGGER_LEVEL,
   DEFAULT_OUTPUT_FORMATS,
-  DEFAULT_START_UNICODE,
   DEFAULT_STYLE,
   DEFAULT_WRITE_OUT_FILES,
   WEBFONTS_DIR_NAME,
 } from "./constants";
-import { compareVersionNumbers, validateSubsetType } from "./utils";
+import {
+  compareVersionNumbers,
+  validateSubsetType,
+  subsetItemSorter,
+} from "./utils";
 
 import { LoggerOptions, Logger } from "../types/Logger";
-import { ProviderInterface } from "../types/Provider";
-import { MetaData, MetaDataset } from "../types/Metadata";
+import { ProviderInterface, Style2FontFileMap } from "../types/Provider";
+import { AllMetaData, MetaData, MetaDataset, Style } from "../types/Metadata";
 import { SubsetItem } from "../types/SubsetItem";
 import { MakeFontContext } from "../process/types/MakeFontContext";
 import { ProviderOptions } from "../types/ProviderOptions";
-import { validateOptionNumber, validateOptions } from "../process/utils";
-import { subsetItemSorter } from "./utils";
+import { validateOptions } from "../process/utils";
 
 import generateFont from "../process/generate";
 
 export abstract class SubsetProvider implements ProviderInterface {
   public abstract packageName: string;
   protected abstract fontName: string;
-  protected abstract styleTtfMap: { [key: string]: string };
+  protected abstract style2FontFileMap: Style2FontFileMap;
   protected abstract cssPrefix: string;
-  protected abstract fontHeight?: number;
-  protected abstract descent?: number;
   protected fontFileName: string | undefined;
   protected minVersion: string | undefined;
   protected maxVersion: string | undefined;
@@ -52,13 +52,13 @@ export abstract class SubsetProvider implements ProviderInterface {
    * @param {string}iconName
    * @return {MetaData}
    */
-  protected abstract normalizeIconMeta(iconName: string): MetaData;
+  protected abstract normalizeIconMeta(iconName: SubsetItem): MetaData;
 
   /**
    * This method get the LICENSE file path from the target font package. Subclass should override it if failed.
    */
   protected get fontLicensePath(): string | undefined {
-    let licensePath: any = undefined;
+    let licensePath: string | undefined = undefined;
     for (const fileName of ["LICENSE", "LICENSE.txt", "LICENSE.md"]) {
       try {
         licensePath = this.validateSubPath(fileName);
@@ -96,7 +96,7 @@ export abstract class SubsetProvider implements ProviderInterface {
   protected _subsetMeta: MetaDataset | undefined;
 
   // a lazily cached value of all metaData
-  private _allMetaData: any | undefined;
+  private _allMetaData: MetaDataset | undefined;
 
   // a lazily cached value of package version
   private _version: string | undefined;
@@ -150,22 +150,11 @@ export abstract class SubsetProvider implements ProviderInterface {
     this.moreValidation();
   }
 
-  public get allMetaData(): any {
+  public get allMetaData(): AllMetaData {
     if (typeof this._allMetaData !== "undefined") return this._allMetaData;
 
     this.validate();
     this._allMetaData = this.getAllMetaData();
-
-    // initialize startUnicode after allMetaData is initialized
-
-    this.setOptions(
-      "startUnicode",
-      "undefined" === typeof this.options.startUnicode
-        ? DEFAULT_START_UNICODE
-        : this.options.startUnicode
-    );
-
-    validateOptionNumber(this.options, "startUnicode", true);
 
     this.setOptions(
       "sort",
@@ -188,7 +177,7 @@ export abstract class SubsetProvider implements ProviderInterface {
     return this._logger;
   }
 
-  private validateIconMeta(iconName: string): MetaData {
+  private validateIconMeta(iconName: SubsetItem): MetaData {
     if (typeof this.allMetaData[iconName] === "undefined")
       throw new WarningError(
         `"${iconName}" does not exists in metadata available.`
@@ -199,8 +188,6 @@ export abstract class SubsetProvider implements ProviderInterface {
     if (!metaData.svgDataObjects) {
       throw new WarningError(`icon "${iconName}" does not have svg data.`);
     }
-
-    if (this.options.resetUnicode) delete metaData.unicode;
 
     if (!metaData.unicode) {
       this.logger.warn(
@@ -216,7 +203,7 @@ export abstract class SubsetProvider implements ProviderInterface {
    * method is to avoid identical icon name exists across subset providers in a combining process.
    * @return {string | undefined}
    **/
-  public renameIcon(iconName: string): string | undefined {
+  public renameIcon(iconName: SubsetItem): string | undefined {
     if (typeof this._subsetMeta == "undefined") return;
     if (typeof this._subsetMeta[iconName] == "undefined") return;
 
@@ -239,9 +226,9 @@ export abstract class SubsetProvider implements ProviderInterface {
     if (typeof this._subsetMeta !== "undefined") return this._subsetMeta;
 
     const metaDataset: MetaDataset = {},
-      added: string[] = [],
-      duplicated: string[] = [],
-      failed: string[] = [];
+      added: SubsetItem[] = [],
+      duplicated: SubsetItem[] = [],
+      failed: SubsetItem[] = [];
 
     let subset = [...this.subset];
 
@@ -402,14 +389,14 @@ export abstract class SubsetProvider implements ProviderInterface {
 
     this.validateOptions();
 
-    for (const [style, _path] of Object.entries(this.styleTtfMap)) {
-      this.styleTtfMap[style] = pathJoin(this.baseDir, _path);
+    for (const [style, _path] of Object.entries(this.style2FontFileMap)) {
+      this.style2FontFileMap[style as Style] = pathJoin(this.baseDir, _path);
     }
 
     const fontFileName = this.options.fontFileName as string;
     const outputDir = pathJoin(rootDir, fontFileName);
     const mfContext: MakeFontContext = {
-      styleTtfMap: this.styleTtfMap,
+      style2FontFileMap: this.style2FontFileMap,
       options: this.options,
       fontFileName: fontFileName,
       originalCSSPrefix: this.cssPrefix,

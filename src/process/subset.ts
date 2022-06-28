@@ -41,13 +41,23 @@ type ToSubsetFonts = (
 
 const toSubsetFonts: ToSubsetFonts = (toSubsetOptions, targetFormat) => {
   return new Promise((resolve, reject) => {
-    const unicodeLiteral = toSubsetOptions.subsetItems
-      .map((subsetItem: IconMetaData) => {
-        return convertUnicode(subsetItem.metadata.unicode as string);
-      })
-      .flat(2)
-      .join("");
-    subsetFont(readFileSync(toSubsetOptions.targetFontPath), unicodeLiteral, {
+    const unicodeLiteral: string = toSubsetOptions.subsetItems
+        .map((subsetItem: IconMetaData) => {
+          return convertUnicode(subsetItem.metadata.unicode);
+        })
+        .flat(2)
+        .join(""),
+      targetFontPath = toSubsetOptions.targetFontPath;
+
+    let targetFontBuffer;
+
+    try {
+      targetFontBuffer = readFileSync(targetFontPath);
+    } catch (err) {
+      throw reject(err);
+    }
+
+    subsetFont(targetFontBuffer, unicodeLiteral, {
       targetFormat: targetFormat,
     })
       .then((result: any) => {
@@ -87,7 +97,7 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
       : `${context.originalCSSPrefix}-${style}-${fontWeight}`,
     formats = options.formats.map((format) => {
       return format.toLowerCase();
-    });
+    }) as Formats;
 
   const pushToResult = (format: string, data: any) => {
     result.webfonts.push({
@@ -124,7 +134,7 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
   const fontFaceCtx: FontFaceRenderContext = {
     prefix: options.prefix as string,
     fontName: options.fontName,
-    formats: formats as Formats,
+    formats: formats,
     fontFileName: fontFileName,
     style: style,
     fontWeight: fontWeight,

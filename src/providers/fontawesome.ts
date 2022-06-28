@@ -20,14 +20,12 @@ import { ProviderOptions } from "../types/ProviderOptions";
  */
 class FaFreeProvider extends SubsetProvider implements ProviderInterface {
   packageName = FONT_AWESOME_FREE_PACKAGE_NAME;
-  descent = 48;
-  fontHeight = 512;
   minVersion = "5.0";
   cssPrefix = FONT_AWESOME_FREE_DEFAULT_CSS_PREFIX;
   fontName = FONT_AWESOME_DEFAULT_FONT_NAME;
   fontFileName = FONT_AWESOME_DEFAULT_FONT_FILE_NAME;
 
-  styleTtfMap = {
+  style2FontFileMap = {
     brands: "webfonts/fa-brands-400.ttf",
     regular: "webfonts/fa-regular-400.ttf",
     solid: "webfonts/fa-solid-900.ttf",
@@ -49,7 +47,7 @@ class FaFreeProvider extends SubsetProvider implements ProviderInterface {
     return yaml.load(readFileSync(_metaYmlPath, "utf-8"));
   }
 
-  normalizeIconMeta(iconName: string): MetaData {
+  normalizeIconMeta(iconName: SubsetItem): MetaData {
     const iconData = this.allMetaData[iconName],
       unicode = iconData.unicode,
       styles = iconData.styles,

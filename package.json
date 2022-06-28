@@ -17,7 +17,7 @@
     "copy": "copyfiles -e \"**/*.ts\" -u 1 \"src/**/*\" dist",
     "prebuild": "npm run copy",
     "build": "tsc",
-    "demo": "node demo-combine.js && node demo-standalone.js",
+    "demo": "node dist/demo-combine.js && node dist/demo-standalone.js",
     "dev-demo": "npm run build && npm run demo",
     "pretest": "npm run build",
     "test": "nyc --reporter=lcov mocha tests/*.mocha.ts",
@@ -42,7 +42,6 @@
     ]
   },
   "dependencies": {
-    "@mdi/font": "^6.7.96",
     "js-yaml": "^4.1.0",
     "mkdirp": "^1.0.4",
     "node-sass": "^7.0.1",
@@ -60,6 +59,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@material-design-icons/svg": "^0.11.2",
+    "@mdi/font": "^6.7.96",
     "@mdi/svg": "^6.7.96",
     "@types/mkdirp": "^1.0.2",
     "@types/mocha": "^9.1.1",

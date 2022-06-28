@@ -1,5 +1,10 @@
-const iconFontSubset = require("./dist").default;
-const { MdiProvider, FaFreeProvider, MiProvider } = require("./dist");
+const { subsetIconfont } = require("./index");
+const {
+  MdiProvider,
+  FaFreeProvider,
+  MiProvider,
+  BiProvider,
+} = require("./index");
 
 const mdi = new MdiProvider(
   [
@@ -12,15 +17,15 @@ const mdi = new MdiProvider(
     "close",
     "sync",
     "crop-rotate",
+    "cancel",
     // "__all__",
-    // "cancel",
   ],
   {}
 );
 
 const fa = new FaFreeProvider(
   [
-    "icon-does-not-exists",
+    // "icon-does-not-exists",
     "clock",
     "a",
     "500px",
@@ -33,19 +38,22 @@ const fa = new FaFreeProvider(
 
 const mi = new MiProvider(
   [
-    // "abc",
+    "abc",
     // "__all__",
     // "workspaces",
     // "alarm-on",
     // "notification-important"
-    "add-circle",
+    // "add-circle",
   ],
   { formats: ["ttf", "woff2"] }
 );
 
+const bi = new BiProvider(["plus"], { formats: ["ttf", "woff2"] });
+
 // combine mode, mdi and fa icons will use ss as css prefix.
-iconFontSubset([fa, mi, mdi], "./output", {
+subsetIconfont([fa, mi, mdi, bi], "./output", {
   formats: ["woff2", "ttf"],
-  // resetUnicode: true
   // loggerOptions: {level: "debug"}
+}).then((result) => {
+  console.log(result);
 });
