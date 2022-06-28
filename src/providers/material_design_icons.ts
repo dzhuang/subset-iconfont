@@ -1,4 +1,4 @@
-import { SubsetProvider } from "./base";
+import { SubsetProvider } from './base';
 import {
   DEFAULT_STYLE,
   MDI_DEFAULT_CSS_PREFIX,
@@ -6,14 +6,14 @@ import {
   MDI_DEFAULT_FONT_NAME,
   MDI_FONT_PACKAGE_NAME,
   MDI_SVG_PACKAGE_NAME,
-} from "./constants";
-import { join } from "path";
-import { existsSync, readFileSync } from "fs";
-import { join as pathJoin } from "path";
-import { ProviderInterface } from "../types/Provider";
-import { MetaData, MetaDataset } from "../types/Metadata";
-import { SubsetItem } from "../types/SubsetItem";
-import { ProviderOptions } from "../types/ProviderOptions";
+} from './constants';
+import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
+import { join as pathJoin } from 'path';
+import { ProviderInterface } from '../types/Provider';
+import { MetaData, MetaDataset } from '../types/Metadata';
+import { SubsetItem } from '../types/SubsetItem';
+import { ProviderOptions } from '../types/ProviderOptions';
 
 /**
  * SubsetProvider for Material design icons.
@@ -26,7 +26,7 @@ class MdiProvider extends SubsetProvider implements ProviderInterface {
   hasMultipleStyles = false;
 
   style2FontFileMap = {
-    [DEFAULT_STYLE]: "fonts/materialdesignicons-webfont.ttf",
+    [DEFAULT_STYLE]: 'fonts/materialdesignicons-webfont.ttf',
   };
 
   constructor(subset: SubsetItem[], options?: ProviderOptions) {
@@ -36,30 +36,30 @@ class MdiProvider extends SubsetProvider implements ProviderInterface {
   moreValidation() {
     super.moreValidation();
 
-    const node_modules_path = "node_modules";
+    const node_modules_path = 'node_modules';
     const svgPackageDir = pathJoin(node_modules_path, MDI_SVG_PACKAGE_NAME);
 
     if (!existsSync(svgPackageDir)) {
       throw new Error(
         `Unable to find in ${svgPackageDir} ` +
-          `folder. Double-check that you have the package installed as a dependency.`
+          'folder. Double-check that you have the package installed as a dependency.'
       );
     }
 
-    const metaJsonPath = pathJoin(svgPackageDir, "meta.json");
+    const metaJsonPath = pathJoin(svgPackageDir, 'meta.json');
 
     if (!existsSync(metaJsonPath)) {
       throw new Error(
         `Unable to find in ${metaJsonPath} ` +
-          `folder. Double-check that you have the package installed as a dependency.`
+          'folder. Double-check that you have the package installed as a dependency.'
       );
     }
   }
 
   getAllMetaData() {
-    const node_modules_path = "node_modules";
+    const node_modules_path = 'node_modules';
     const svgPackageDir = pathJoin(node_modules_path, MDI_SVG_PACKAGE_NAME);
-    const _metaPath = join(svgPackageDir, "meta.json");
+    const _metaPath = join(svgPackageDir, 'meta.json');
 
     const metaJSON = JSON.parse(readFileSync(_metaPath).toString());
 
@@ -84,8 +84,8 @@ class MdiProvider extends SubsetProvider implements ProviderInterface {
         subset
           .map((subsetItem) => {
             const _ret = [subsetItem];
-            const nonOutlined = subsetItem.endsWith("-outline")
-                ? subsetItem.slice(0, "-outline".length)
+            const nonOutlined = subsetItem.endsWith('-outline')
+                ? subsetItem.slice(0, '-outline'.length)
                 : subsetItem,
               outlined = `${nonOutlined}-outline`;
             [nonOutlined, outlined].forEach((item) => {
@@ -101,7 +101,7 @@ class MdiProvider extends SubsetProvider implements ProviderInterface {
 
   // styles were using different unicode
   normalizeIconMeta(iconName: SubsetItem): MetaData {
-    const node_modules_path = "node_modules";
+    const node_modules_path = 'node_modules';
     const svgPackageDir = pathJoin(node_modules_path, MDI_SVG_PACKAGE_NAME);
 
     const iconData = this.allMetaData[iconName],

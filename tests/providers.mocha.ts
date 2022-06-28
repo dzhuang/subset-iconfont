@@ -1,13 +1,11 @@
-"use strict";
-
-import { MI_DEFAULT_FONT_FILE_NAME } from "../dist/providers/constants";
+'use strict';
 
 const REMOVE_TEMP_AFTER_EACH_TEST = true;
-const fs = require("fs");
-const winston = require("winston");
-const assert = require("assert");
+const fs = require('fs');
+const winston = require('winston');
+const assert = require('assert');
 
-import { MdiProvider, FaFreeProvider, BiProvider, MiProvider } from "../src";
+import { MdiProvider, FaFreeProvider, BiProvider, MiProvider } from '../src';
 import {
   MDI_DEFAULT_FONT_FILE_NAME,
   DEFAULT_OUTPUT_FORMATS,
@@ -15,7 +13,8 @@ import {
   DEFAULT_COMBINE_FILE_NAME,
   COMBINED_CSS_NAME,
   BOOTSTRAP_ICONS_FONT_FILE_NAME,
-} from "../src/providers/constants";
+  MI_DEFAULT_FONT_FILE_NAME,
+} from '../src/providers/constants';
 
 import {
   getTemp,
@@ -24,11 +23,11 @@ import {
   BOOTSTRAP_ICONS_FONT_FACE_FILE_NAME,
   removeTemp,
   MDI_FONT_FACE_FILE_NAME,
-} from "./helpers";
+} from './helpers';
 
-import { ConfigError } from "../src/utils/errors";
+import { ConfigError } from '../src/utils/errors';
 
-const sinon = require("sinon");
+const sinon = require('sinon');
 
 before(function () {
   removeTemp();
@@ -38,18 +37,12 @@ after(function () {
   if (REMOVE_TEMP_AFTER_EACH_TEST) removeTemp();
 });
 
-describe("Providers should be able to work alone", () => {
-  it("mdi (Material Design Icons) should be able to work alone", (done) => {
+describe('Providers should be able to work alone', () => {
+  it('mdi (Material Design Icons) should be able to work alone', (done) => {
     generateProviderSubsetFont(
       MdiProvider,
       {
-        subset: ["plus"],
-        // options: {
-        //   loggerOptions: {
-        //     level: "info",
-        //     format: winston.format.json(),
-        //   },
-        // },
+        subset: ['plus'],
       },
       done,
       {
@@ -84,17 +77,11 @@ describe("Providers should be able to work alone", () => {
       // false
     );
   });
-  it("fa (FontAwesome Free) should be able to work alone", (done) => {
+  it('fa (FontAwesome Free) should be able to work alone', (done) => {
     generateProviderSubsetFont(
       FaFreeProvider,
       {
-        subset: ["clock", "plus"],
-        // options: {
-        //   loggerOptions: {
-        //     level: "warn",
-        //     format: winston.format.json(),
-        //   },
-        // },
+        subset: ['clock', 'plus'],
       },
       done,
       {
@@ -104,8 +91,8 @@ describe("Providers should be able to work alone", () => {
             names: {
               exist: [
                 COMBINED_CSS_NAME,
-                "fa-regular",
-                "fa-solid",
+                'fa-regular',
+                'fa-solid',
                 FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
               ],
               nonExist: [DEFAULT_COMBINE_FILE_NAME],
@@ -116,7 +103,7 @@ describe("Providers should be able to work alone", () => {
         providerFontFiles: [
           {
             names: {
-              exist: ["fa-regular-400", "fa-solid-900"],
+              exist: ['fa-regular-400', 'fa-solid-900'],
               nonExist: [FONT_AWESOME_DEFAULT_FONT_FILE_NAME],
             },
             extensions: { exist: DEFAULT_OUTPUT_FORMATS },
@@ -128,11 +115,11 @@ describe("Providers should be able to work alone", () => {
     );
   });
 
-  it("bi (Bootstrap Icons) should be able to work alone", (done) => {
+  it('bi (Bootstrap Icons) should be able to work alone', (done) => {
     generateProviderSubsetFont(
       BiProvider,
       {
-        subset: ["xbox", "cloud-haze-1"], // cloud-haze-1 doesn't exist as a file
+        subset: ['xbox', 'cloud-haze-1'], // cloud-haze-1 doesn't exist as a file
       },
       done,
       {
@@ -164,11 +151,11 @@ describe("Providers should be able to work alone", () => {
     );
   });
 
-  it("mi (Google Material Icons) should be able to work alone", (done) => {
+  it('mi (Google Material Icons) should be able to work alone', (done) => {
     generateProviderSubsetFont(
       MiProvider,
       {
-        subset: ["non-exist-icon", "alarm-on"], // cloud-haze-1 doesn't exist as a file
+        subset: ['non-exist-icon', 'alarm-on'], // cloud-haze-1 doesn't exist as a file
       },
       done,
       {
@@ -178,13 +165,13 @@ describe("Providers should be able to work alone", () => {
             names: {
               exist: [
                 COMBINED_CSS_NAME,
-                "mi-filled",
-                "mi-outlined",
-                "mi-round",
-                "mi-two-tone",
+                'mi-filled',
+                'mi-outlined',
+                'mi-round',
+                'mi-two-tone',
                 MI_DEFAULT_FONT_FILE_NAME,
               ],
-              nonExist: ["mi-sharp"],
+              nonExist: ['mi-sharp'],
             },
             extensions: { exist: DEFAULT_CSS_OUTPUT_EXTENSIONS },
           },
@@ -194,12 +181,12 @@ describe("Providers should be able to work alone", () => {
           {
             names: {
               exist: [
-                "mi-filled-400",
-                "mi-outlined-400",
-                "mi-round-400",
-                "mi-two-tone-400",
+                'mi-filled-400',
+                'mi-outlined-400',
+                'mi-round-400',
+                'mi-two-tone-400',
               ],
-              nonExist: ["mi-sharp-400"],
+              nonExist: ['mi-sharp-400'],
             },
             extensions: { exist: DEFAULT_OUTPUT_FORMATS },
           },
@@ -212,11 +199,11 @@ describe("Providers should be able to work alone", () => {
     );
   });
 
-  it("should be ok to output nothing", (done) => {
+  it('should be ok to output nothing', (done) => {
     generateProviderSubsetFont(
       MdiProvider,
       {
-        subset: ["plus"],
+        subset: ['plus'],
         options: {
           writeOutFiles: [],
         },
@@ -254,13 +241,13 @@ describe("Providers should be able to work alone", () => {
       // false
     );
   });
-  it("should be ok to output only metadata", (done) => {
+  it('should be ok to output only metadata', (done) => {
     generateProviderSubsetFont(
       MdiProvider,
       {
-        subset: ["plus"],
+        subset: ['plus'],
         options: {
-          writeOutFiles: ["web"],
+          writeOutFiles: ['web'],
         },
       },
       done,
@@ -296,13 +283,13 @@ describe("Providers should be able to work alone", () => {
       // false
     );
   });
-  it("should be ok to output only css", (done) => {
+  it('should be ok to output only css', (done) => {
     generateProviderSubsetFont(
       MdiProvider,
       {
-        subset: ["plus"],
+        subset: ['plus'],
         options: {
-          writeOutFiles: ["css"],
+          writeOutFiles: ['css'],
         },
       },
       done,
@@ -339,20 +326,20 @@ describe("Providers should be able to work alone", () => {
   });
 });
 
-describe("misc test to increase coverage", () => {
-  it("rename icon won't work for non exist icons", () => {
-    const mdi = new MdiProvider(["plus"]),
-      renamedResult = mdi.renameIcon("non-exist-icon");
-    assert.equal(typeof renamedResult, "undefined");
+describe('misc test to increase coverage', () => {
+  it('rename icon will not work for non exist icons', () => {
+    const mdi = new MdiProvider(['plus']),
+      renamedResult = mdi.renameIcon('non-exist-icon');
+    assert.equal(typeof renamedResult, 'undefined');
   });
 });
 
-describe("providerBase subclass test", () => {
+describe('providerBase subclass test', () => {
   afterEach(function () {
     sinon.restore();
   });
 
-  it("validate subset fail, invalid subset", () => {
+  it('validate subset fail, invalid subset', () => {
     assert.throws(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -360,9 +347,9 @@ describe("providerBase subclass test", () => {
     }, ConfigError);
   });
 
-  it("ensure logger is cached", (done) => {
+  it('ensure logger is cached', (done) => {
     const tempDir = getTemp();
-    const mdiObj = new MdiProvider(["foo"], {
+    const mdiObj = new MdiProvider(['foo'], {
       loggerOptions: { silent: true },
     });
 
@@ -371,36 +358,36 @@ describe("providerBase subclass test", () => {
     mdiObj
       .makeFonts(tempDir.name)
       .then(() => {
-        stub = sinon.stub(winston, "createLogger");
+        stub = sinon.stub(winston, 'createLogger');
         mdiObj.makeFonts(tempDir.name);
       })
       .then(() => {
         sinon.assert.notCalled(stub);
 
         // this will trigger createLogger
-        mdiObj.setLoggerOptions("silent", true);
+        mdiObj.setLoggerOptions('silent', true);
         sinon.assert.calledOnce(stub);
         done();
       })
       .catch(done);
   });
 
-  it("ensure when logger is not initialized, setLoggerOptions won't trigger createLogger", () => {
-    const mdiObj = new MdiProvider(["foo"]),
-      stub = sinon.stub(winston, "createLogger");
+  it('ensure when logger is not initialized, setLoggerOptions will not trigger createLogger', () => {
+    const mdiObj = new MdiProvider(['foo']),
+      stub = sinon.stub(winston, 'createLogger');
 
-    mdiObj.setLoggerOptions("silent", true);
+    mdiObj.setLoggerOptions('silent', true);
     sinon.assert.notCalled(stub);
   });
 
-  it("should work without license file", (done) => {
+  it('should work without license file', (done) => {
     const originalValidateSubPath = fs.existsSync;
-    sinon.stub(fs, "existsSync").callsFake((path: string) => {
-      if (path.includes("LICENSE")) return false;
+    sinon.stub(fs, 'existsSync').callsFake((path: string) => {
+      if (path.includes('LICENSE')) return false;
       return originalValidateSubPath(path);
     });
 
-    const mdi = new MdiProvider(["plus"], { loggerOptions: { silent: true } });
+    const mdi = new MdiProvider(['plus'], { loggerOptions: { silent: true } });
 
     const tmpDir = getTemp();
     mdi
@@ -414,14 +401,14 @@ describe("providerBase subclass test", () => {
       .finally(tmpDir.removeCallback);
   });
 
-  it("should work without version file", (done) => {
+  it('should work without version file', (done) => {
     const originalValidateSubPath = fs.existsSync;
-    sinon.stub(fs, "existsSync").callsFake((path: string) => {
-      if (path.includes("package.json")) return false;
+    sinon.stub(fs, 'existsSync').callsFake((path: string) => {
+      if (path.includes('package.json')) return false;
       return originalValidateSubPath(path);
     });
 
-    const mdi = new MdiProvider(["plus"], { loggerOptions: { silent: true } });
+    const mdi = new MdiProvider(['plus'], { loggerOptions: { silent: true } });
 
     const tmpDir = getTemp();
     mdi
@@ -435,15 +422,12 @@ describe("providerBase subclass test", () => {
       .finally(tmpDir.removeCallback);
   });
 
-  it("should throw when min version number is restricted while no package version", async () => {
-    const fa = new FaFreeProvider(
-      ["plus"]
-      // {loggerOptions: {silent: true}}
-    );
+  it('should throw when min version number is restricted while no package version', async () => {
+    const fa = new FaFreeProvider(['plus']);
 
     const originalValidateSubPath = fs.existsSync;
-    sinon.stub(fs, "existsSync").callsFake((path: string) => {
-      if (path.includes("package.json")) return false;
+    sinon.stub(fs, 'existsSync').callsFake((path: string) => {
+      if (path.includes('package.json')) return false;
       return originalValidateSubPath(path);
     });
 
@@ -457,18 +441,15 @@ describe("providerBase subclass test", () => {
       }, Error);
       thrown = true;
     }
-    if (!thrown) throw new Error("Expected error not raise");
+    if (!thrown) throw new Error('Expected error not raise');
     tmpDir.removeCallback();
   });
 
-  it("should throw when version number is lower than min version number", async () => {
-    const fa = new FaFreeProvider(
-      ["plus"]
-      // {loggerOptions: {silent: true}}
-    );
+  it('should throw when version number is lower than min version number', async () => {
+    const fa = new FaFreeProvider(['plus']);
 
-    sinon.stub(fa, "version").get(function getterFn() {
-      return "1.1";
+    sinon.stub(fa, 'version').get(function getterFn() {
+      return '1.1';
     });
 
     const tmpDir = getTemp();
@@ -481,7 +462,7 @@ describe("providerBase subclass test", () => {
       }, Error);
       thrown = true;
     }
-    if (!thrown) throw new Error("Expected error not raise");
+    if (!thrown) throw new Error('Expected error not raise');
     tmpDir.removeCallback();
   });
 });

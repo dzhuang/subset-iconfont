@@ -1,18 +1,18 @@
-import { SubsetProvider } from "./base";
+import { SubsetProvider } from './base';
 import {
   DEFAULT_STYLE,
   BOOTSTRAP_ICON_CSS_PREFIX,
   BOOTSTRAP_ICONS_FONT_FILE_NAME,
   BOOTSTRAP_ICON_FONT_NAME,
   BOOTSTRAP_ICON_PACKAGE_NAME,
-} from "./constants";
-import { join } from "path";
-import { readFileSync } from "fs";
-import { WarningError } from "../utils/errors";
-import { ProviderInterface } from "../types/Provider";
-import { MetaData, MetaDataset } from "../types/Metadata";
-import { SubsetItem } from "../types/SubsetItem";
-import { ProviderOptions } from "../types/ProviderOptions";
+} from './constants';
+import { join } from 'path';
+import { readFileSync } from 'fs';
+import { WarningError } from '../utils/errors';
+import { ProviderInterface } from '../types/Provider';
+import { MetaData, MetaDataset } from '../types/Metadata';
+import { SubsetItem } from '../types/SubsetItem';
+import { ProviderOptions } from '../types/ProviderOptions';
 
 /**
  * SubsetProvider for Bootstrap icons.
@@ -25,7 +25,7 @@ class BiProvider extends SubsetProvider implements ProviderInterface {
   hasMultipleStyles = false;
 
   style2FontFileMap = {
-    [DEFAULT_STYLE]: "font/fonts/bootstrap-icons.woff2",
+    [DEFAULT_STYLE]: 'font/fonts/bootstrap-icons.woff2',
   };
 
   constructor(subset: SubsetItem[], options?: ProviderOptions) {
@@ -34,13 +34,13 @@ class BiProvider extends SubsetProvider implements ProviderInterface {
 
   moreValidation() {
     super.moreValidation();
-    this.validateSubPath("font");
-    this.validateSubPath("font/bootstrap-icons.json");
-    this.validateSubPath("icons");
+    this.validateSubPath('font');
+    this.validateSubPath('font/bootstrap-icons.json');
+    this.validateSubPath('icons');
   }
 
   getAllMetaData() {
-    const _metaPath = join(this.baseDir, "font", "bootstrap-icons.json");
+    const _metaPath = join(this.baseDir, 'font', 'bootstrap-icons.json');
 
     const meta = JSON.parse(readFileSync(_metaPath).toString());
 

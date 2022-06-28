@@ -1,29 +1,29 @@
-import { join as pathJoin } from "path";
-import { existsSync, readFileSync } from "fs";
-import { getLogger } from "../utils/utils";
-import { ConfigError, WarningError } from "../utils/errors";
+import { join as pathJoin } from 'path';
+import { existsSync, readFileSync } from 'fs';
+import { getLogger } from '../utils/utils';
+import { ConfigError, WarningError } from '../utils/errors';
 import {
   DEFAULT_LOGGER_LEVEL,
   DEFAULT_OUTPUT_FORMATS,
   DEFAULT_STYLE,
   DEFAULT_WRITE_OUT_FILES,
   WEBFONTS_DIR_NAME,
-} from "./constants";
+} from './constants';
 import {
   compareVersionNumbers,
   validateSubsetType,
   subsetItemSorter,
-} from "./utils";
+} from './utils';
 
-import { LoggerOptions, Logger } from "../types/Logger";
-import { ProviderInterface, Style2FontFileMap } from "../types/Provider";
-import { AllMetaData, MetaData, MetaDataset, Style } from "../types/Metadata";
-import { SubsetItem } from "../types/SubsetItem";
-import { MakeFontContext } from "../process/types/MakeFontContext";
-import { ProviderOptions } from "../types/ProviderOptions";
-import { validateOptions } from "../process/utils";
+import { LoggerOptions, Logger } from '../types/Logger';
+import { ProviderInterface, Style2FontFileMap } from '../types/Provider';
+import { AllMetaData, MetaData, MetaDataset, Style } from '../types/Metadata';
+import { SubsetItem } from '../types/SubsetItem';
+import { MakeFontContext } from '../process/types/MakeFontContext';
+import { ProviderOptions } from '../types/ProviderOptions';
+import { validateOptions } from '../process/utils';
 
-import generateFont from "../process/generate";
+import generateFont from '../process/generate';
 
 export abstract class SubsetProvider implements ProviderInterface {
   public abstract packageName: string;
@@ -59,7 +59,7 @@ export abstract class SubsetProvider implements ProviderInterface {
    */
   protected get fontLicensePath(): string | undefined {
     let licensePath: string | undefined = undefined;
-    for (const fileName of ["LICENSE", "LICENSE.txt", "LICENSE.md"]) {
+    for (const fileName of ['LICENSE', 'LICENSE.txt', 'LICENSE.md']) {
       try {
         licensePath = this.validateSubPath(fileName);
       } catch (ex) {
@@ -69,7 +69,7 @@ export abstract class SubsetProvider implements ProviderInterface {
 
     if (!licensePath)
       this.logger.warn(
-        `the get "fontLicensePath" method failed to get a valid license path.`
+        'the get "fontLicensePath" method failed to get a valid license path.'
       );
     return licensePath;
   }
@@ -83,7 +83,7 @@ export abstract class SubsetProvider implements ProviderInterface {
   }
 
   public get subset() {
-    if (typeof this._allMetaData !== "undefined") {
+    if (typeof this._allMetaData !== 'undefined') {
       return this._subset;
     }
     return this.getUpdatedSubsetFromAllMetadata(this._subset);
@@ -129,18 +129,18 @@ export abstract class SubsetProvider implements ProviderInterface {
     override = false,
     ignoreUndefined = true
   ): void {
-    if (ignoreUndefined && typeof value === "undefined") return;
-    if (typeof this._options[key] === "undefined" || override) {
+    if (ignoreUndefined && typeof value === 'undefined') return;
+    if (typeof this._options[key] === 'undefined' || override) {
       this._options[key] = value;
     }
   }
 
   public setLoggerOptions(key: keyof LoggerOptions, value: any): void {
     this._options.loggerOptions = this._options.loggerOptions || {};
-    if (typeof this._options.loggerOptions[key] === "undefined") {
+    if (typeof this._options.loggerOptions[key] === 'undefined') {
       this._options.loggerOptions[key] = value;
     }
-    if (typeof this._logger !== "undefined") {
+    if (typeof this._logger !== 'undefined') {
       this._logger = getLogger(this.options.loggerOptions);
     }
   }
@@ -151,14 +151,14 @@ export abstract class SubsetProvider implements ProviderInterface {
   }
 
   public get allMetaData(): AllMetaData {
-    if (typeof this._allMetaData !== "undefined") return this._allMetaData;
+    if (typeof this._allMetaData !== 'undefined') return this._allMetaData;
 
     this.validate();
     this._allMetaData = this.getAllMetaData();
 
     this.setOptions(
-      "sort",
-      "undefined" === typeof this.options.sort ? true : this.options.sort
+      'sort',
+      'undefined' === typeof this.options.sort ? true : this.options.sort
     );
 
     return this._allMetaData;
@@ -170,15 +170,15 @@ export abstract class SubsetProvider implements ProviderInterface {
   }
 
   private get logger(): Logger {
-    if (typeof this._logger !== "undefined") return this._logger;
+    if (typeof this._logger !== 'undefined') return this._logger;
 
-    this.setLoggerOptions("level", DEFAULT_LOGGER_LEVEL);
+    this.setLoggerOptions('level', DEFAULT_LOGGER_LEVEL);
     this._logger = getLogger(this.options.loggerOptions);
     return this._logger;
   }
 
   private validateIconMeta(iconName: SubsetItem): MetaData {
-    if (typeof this.allMetaData[iconName] === "undefined")
+    if (typeof this.allMetaData[iconName] === 'undefined')
       throw new WarningError(
         `"${iconName}" does not exists in metadata available.`
       );
@@ -204,8 +204,8 @@ export abstract class SubsetProvider implements ProviderInterface {
    * @return {string | undefined}
    **/
   public renameIcon(iconName: SubsetItem): string | undefined {
-    if (typeof this._subsetMeta == "undefined") return;
-    if (typeof this._subsetMeta[iconName] == "undefined") return;
+    if (typeof this._subsetMeta == 'undefined') return;
+    if (typeof this._subsetMeta[iconName] == 'undefined') return;
 
     const newName = `${iconName}-${this.cssPrefix}`;
 
@@ -223,7 +223,7 @@ export abstract class SubsetProvider implements ProviderInterface {
   }
 
   public get subsetMeta(): MetaDataset {
-    if (typeof this._subsetMeta !== "undefined") return this._subsetMeta;
+    if (typeof this._subsetMeta !== 'undefined') return this._subsetMeta;
 
     const metaDataset: MetaDataset = {},
       added: SubsetItem[] = [],
@@ -232,7 +232,7 @@ export abstract class SubsetProvider implements ProviderInterface {
 
     let subset = [...this.subset];
 
-    if (subset.indexOf("__all__") > -1) {
+    if (subset.indexOf('__all__') > -1) {
       subset = Object.keys(this.allMetaData);
     }
 
@@ -277,20 +277,20 @@ export abstract class SubsetProvider implements ProviderInterface {
 
     if (duplicated.length) {
       this.logger.warn(
-        `these icon names found to be duplicated in subset provided: ` +
-          `${duplicated.join(", ")}. only the first one will be used.`
+        'these icon names found to be duplicated in subset provided: ' +
+          `${duplicated.join(', ')}. only the first one will be used.`
       );
     }
 
     if (!added.length) {
       this.logger.warn(
-        `there is no valid icon names, no font will be generated.`
+        'there is no valid icon names, no font will be generated.'
       );
     } else {
       this.logger.info(
         `extracted a subset of ${
           Object.keys(metaDataset).length
-        } icons: ${added.join(", ")}.`
+        } icons: ${added.join(', ')}.`
       );
     }
 
@@ -301,13 +301,13 @@ export abstract class SubsetProvider implements ProviderInterface {
   protected get baseDir(): string {
     if (this._baseDir) return this._baseDir;
 
-    const node_modules_path = "node_modules",
+    const node_modules_path = 'node_modules',
       baseDir = pathJoin(node_modules_path, this.packageName);
 
     if (!existsSync(baseDir)) {
       throw new Error(
         `Unable to find in ${baseDir} ` +
-          `folder. Double-check that you have the package installed as a dependency.`
+          'folder. Double-check that you have the package installed as a dependency.'
       );
     }
     this._baseDir = baseDir;
@@ -316,7 +316,7 @@ export abstract class SubsetProvider implements ProviderInterface {
 
   private get version(): string | undefined {
     if (this._version !== undefined) return this._version;
-    const pkjPath = pathJoin(this.baseDir, "package.json");
+    const pkjPath = pathJoin(this.baseDir, 'package.json');
     if (!existsSync(pkjPath)) return undefined;
     this._version = JSON.parse(readFileSync(pkjPath).toString()).version;
     return this._version;
@@ -328,9 +328,9 @@ export abstract class SubsetProvider implements ProviderInterface {
     if (!ver)
       throw new Error(
         `${this.packageName}: can not determine version. ` +
-          "Be default, it looks for version field in the package.json of the package. " +
-          "You can override the _version getter to define how to " +
-          "find the version number."
+          'Be default, it looks for version field in the package.json of the package. ' +
+          'You can override the _version getter to define how to ' +
+          'find the version number.'
       );
 
     if (this.maxVersion && compareVersionNumbers(this.maxVersion, ver) < 0) {
@@ -373,19 +373,19 @@ export abstract class SubsetProvider implements ProviderInterface {
   }
 
   public async makeFonts(rootDir: string) {
-    this.setOptions("formats", DEFAULT_OUTPUT_FORMATS);
-    this.setOptions("prefix", this.options.prefix || this.cssPrefix);
-    this.setOptions("webfontDir", WEBFONTS_DIR_NAME);
-    this.setOptions("fontName", this.fontName);
+    this.setOptions('formats', DEFAULT_OUTPUT_FORMATS);
+    this.setOptions('prefix', this.options.prefix || this.cssPrefix);
+    this.setOptions('webfontDir', WEBFONTS_DIR_NAME);
+    this.setOptions('fontName', this.fontName);
 
     this.setOptions(
-      "writeOutFiles",
-      typeof this.options.writeOutFiles === "undefined"
+      'writeOutFiles',
+      typeof this.options.writeOutFiles === 'undefined'
         ? DEFAULT_WRITE_OUT_FILES
         : this.options.writeOutFiles
     );
 
-    this.setOptions("fontFileName", this.fontFileName);
+    this.setOptions('fontFileName', this.fontFileName);
 
     this.validateOptions();
 

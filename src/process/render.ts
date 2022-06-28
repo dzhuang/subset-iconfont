@@ -1,5 +1,5 @@
-import { join as pathJoin } from "path";
-import { readFileSync } from "fs";
+import { join as pathJoin } from 'path';
+import { readFileSync } from 'fs';
 import {
   COMBINED_CSS_NAME,
   COMBINED_FONT_LICENSE_FOLDER,
@@ -9,26 +9,26 @@ import {
   METADATA_FILE_NAME,
   SCSS_FILE_NAMES,
   SCSS_FOLDER_NAME,
-} from "../providers/constants";
-import { writeFileSync } from "../utils/utils";
-import { Logger } from "../types/Logger";
-import tmp from "tmp";
-import { createHash, renderEnv } from "./utils";
-import { MetaDataset } from "../types/Metadata";
+} from '../providers/constants';
+import { writeFileSync } from '../utils/utils';
+import { Logger } from '../types/Logger';
+import tmp from 'tmp';
+import { createHash, renderEnv } from './utils';
+import { MetaDataset } from '../types/Metadata';
 import {
   MakeFontBlob,
   RenderContext,
   WriteOutFile,
-} from "./types/RenderContext";
-import { WebRenderContext } from "./types/WebRenderContext";
-import { MakeFontResult } from "./types/MakeFontResult";
-import * as Buffer from "buffer";
+} from './types/RenderContext';
+import { WebRenderContext } from './types/WebRenderContext';
+import { MakeFontResult } from './types/MakeFontResult';
+import * as Buffer from 'buffer';
 
-const sass = require("node-sass");
-const pkjJson = require("../../package.json");
+const sass = require('node-sass');
+const pkjJson = require('../../package.json');
 
 const brandIcon = (() => {
-  return readFileSync(pathJoin(__dirname, "../assets/brand.svg")).toString();
+  return readFileSync(pathJoin(__dirname, '../assets/brand.svg')).toString();
 })();
 
 const getUsedStyle = (metadataSet: MetaDataset) => {
@@ -41,12 +41,12 @@ const getUsedStyle = (metadataSet: MetaDataset) => {
 const createScssFiles = (
   context: RenderContext,
   logger: Logger,
-  mainFileName = "main"
+  mainFileName = 'main'
 ) => {
-  logger.debug(`Started rendering scss from templates.`);
+  logger.debug('Started rendering scss from templates.');
 
   const tempDir = tmp.dirSync({
-    prefix: `ssw-scss`,
+    prefix: 'ssw-scss',
     unsafeCleanup: true,
   });
   logger.debug(`Created tempDir ${tempDir.name} for SCSS files.`);
@@ -86,7 +86,7 @@ const createScssFiles = (
   context.blobObject.scss.forEach((blob) => {
     writeFileSync(pathJoin(outputPath, blob.name), blob.data);
   });
-  logger.debug(`Ended rendering scss from templates.`);
+  logger.debug('Ended rendering scss from templates.');
   return tempDir;
 };
 
@@ -124,9 +124,9 @@ const renderCSS = (context: RenderContext, logger: Logger) => {
             const baseName = `${cssObj.fName}.${cssObj.extension}`;
 
             for (const [key, blob] of Object.entries(result)) {
-              if (key === "stats") continue;
-              const _name = key === "css" ? baseName : `${baseName}.map`,
-                hash = key === "css" ? createHash(blob) : undefined;
+              if (key === 'stats') continue;
+              const _name = key === 'css' ? baseName : `${baseName}.map`,
+                hash = key === 'css' ? createHash(blob) : undefined;
               context.blobObject.css.push({
                 name: _name,
                 dir: CSS_FOLDER_NAME,
@@ -157,8 +157,8 @@ const renderCSS = (context: RenderContext, logger: Logger) => {
   const cssTargetObjects: CSSObj[] = cssFileNames
     .map((fName) => {
       return [
-        ["css", "expanded"],
-        ...(context.generateMinCss ? [["min.css", "compressed"]] : []),
+        ['css', 'expanded'],
+        ...(context.generateMinCss ? [['min.css', 'compressed']] : []),
       ].map(([extension, fileStyle]) => {
         return {
           fName: fName,
@@ -169,13 +169,13 @@ const renderCSS = (context: RenderContext, logger: Logger) => {
     })
     .flat(1);
 
-  logger.debug(`Started rendering css from scss.`);
+  logger.debug('Started rendering css from scss.');
   return Promise.all(cssTargetObjects.map(_renderScss))
     .then(() => {
       return context;
     })
     .finally(() => {
-      logger.info(`finished rendering css/scss.`);
+      logger.info('finished rendering css/scss.');
       if (!logger.isDebugEnabled()) scssTempDir.removeCallback();
       logger.debug(`Removed tempDir ${scssTempDir.name}.`);
     });
@@ -194,15 +194,15 @@ const writeBlobs = (
     web: [],
     metadata: [],
   } as WriteOutBlob;
-  if (context.writeOutFiles.indexOf("metadata") > -1) {
+  if (context.writeOutFiles.indexOf('metadata') > -1) {
     blobObj.metadata.push({
       name: METADATA_FILE_NAME,
-      dir: "",
+      dir: '',
       data: JSON.stringify(context.icons, null, 2),
     });
   }
 
-  if (context.writeOutFiles.indexOf("web") > -1) {
+  if (context.writeOutFiles.indexOf('web') > -1) {
     let cssHash;
     for (const cssBlobObj of context.blobObject.css) {
       if (cssBlobObj.name === `${COMBINED_CSS_NAME}.css`) {
@@ -217,29 +217,29 @@ const writeBlobs = (
         brandIcon: brandIcon,
         npmPackage: pkjJson.name,
         version: pkjJson.version,
-        url: pkjJson.repository.url.replace("git+", ""),
+        url: pkjJson.repository.url.replace('git+', ''),
         author: pkjJson.author,
         fontName: context.fontName,
         cacheString: cssHash,
       },
-      indexHtml = renderEnv.render("web.njk", webRenderContext);
+      indexHtml = renderEnv.render('web.njk', webRenderContext);
 
     blobObj.web.push({
       name: FONT_WEB_PAGE_FILE_NAME,
-      dir: "",
+      dir: '',
       data: indexHtml,
     });
   }
 
-  if (context.license && context.writeOutFiles.indexOf("licenses") > -1) {
+  if (context.license && context.writeOutFiles.indexOf('licenses') > -1) {
     blobObj.licenses.push({
       name: LICENSE_FILE_NAME,
-      dir: "",
+      dir: '',
       data: context.license,
     });
   }
 
-  logger.debug(`Started writing generated files.`);
+  logger.debug('Started writing generated files.');
 
   Object.entries(blobObj).map(([writeOutCat, blobs]) => {
     if (context.writeOutFiles.indexOf(writeOutCat as WriteOutFile) < 0) return;
@@ -253,7 +253,7 @@ const writeBlobs = (
       );
     });
   });
-  logger.debug(`Ended writing generated files.`);
+  logger.debug('Ended writing generated files.');
 };
 
 type Render = (

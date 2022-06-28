@@ -1,11 +1,11 @@
-import { SubsetItem } from "../types/SubsetItem";
+import { SubsetItem } from '../types/SubsetItem';
 
 type ValidateSubsetType = (object: unknown) => boolean;
 
 export const validateSubsetType: ValidateSubsetType = (object) => {
   if (!Array.isArray(object)) return false;
   for (const item of object) {
-    if ("string" !== typeof item) {
+    if ('string' !== typeof item) {
       return false;
     }
   }
@@ -17,8 +17,8 @@ export const validateSubsetType: ValidateSubsetType = (object) => {
  * ref: http://jsfiddle.net/ripper234/Xv9WL/28/
  */
 export const compareVersionNumbers = (v1: string, v2: string) => {
-  const v1parts = v1.split(".");
-  const v2parts = v2.split(".");
+  const v1parts = v1.split('.');
+  const v2parts = v2.split('.');
 
   const isPositiveInteger = (x: string) => {
     // http://stackoverflow.com/a/1019526/11236

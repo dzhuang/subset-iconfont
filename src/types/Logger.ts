@@ -1,4 +1,4 @@
-export import winston = require("winston");
+export import winston = require('winston');
 
 export type Logger = winston.Logger;
 

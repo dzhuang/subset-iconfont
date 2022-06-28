@@ -1,6 +1,6 @@
-const assert = require("assert");
-const fs = require("fs");
-const path = require("path");
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 
 import {
   PACKAGES_OUTPUT_DIR,
@@ -16,13 +16,13 @@ import {
   COMBINED_CSS_NAME,
   COMBINED_FONT_LICENSE_FOLDER,
   BOOTSTRAP_ICONS_FONT_FILE_NAME,
-} from "../src/providers/constants";
+} from '../src/providers/constants';
 
-import { getFontFaceFileName } from "../src/utils/utils";
-import { subsetIconfont } from "../src";
+import { getFontFaceFileName } from '../src/utils/utils';
+import { subsetIconfont } from '../src';
 
-const { sync: mdSync } = require("mkdirp");
-const tmp = require("tmp");
+const { sync: mdSync } = require('mkdirp');
+const tmp = require('tmp');
 
 import {
   CombineModeFileCheck,
@@ -34,7 +34,7 @@ import {
   ProviderHelperParams,
   ProviderFileCheck,
   CombineHelperParams,
-} from "./types/types";
+} from './types/types';
 
 export const BOOTSTRAP_ICONS_FONT_FACE_FILE_NAME = getFontFaceFileName(
   BOOTSTRAP_ICONS_FONT_FILE_NAME
@@ -45,22 +45,22 @@ export const MDI_FONT_FACE_FILE_NAME = getFontFaceFileName(
 );
 
 export const DEFAULT_CSS_OUTPUT_EXTENSIONS = [
-  "css",
-  "min.css",
-  "css.map",
-  "min.css.map",
+  'css',
+  'min.css',
+  'css.map',
+  'min.css.map',
 ];
 
 const validateFilesObject = (filePart: FilePart) => {
   // type validation
-  ["names" as PartName, "extensions" as PartName].forEach((part: PartName) => {
-    if (typeof filePart[part] === "undefined")
+  ['names' as PartName, 'extensions' as PartName].forEach((part: PartName) => {
+    if (typeof filePart[part] === 'undefined')
       throw new Error(`value of "${part}" is undefined`);
 
     const fileStatus: FileStatus = filePart[part];
 
     let validAttrCount = 0;
-    ["exist" as StatusName, "nonExist" as StatusName].forEach((status) => {
+    ['exist' as StatusName, 'nonExist' as StatusName].forEach((status) => {
       if (Object.keys(fileStatus).indexOf(status) < 0) return;
 
       const valueOfStatus: string[] = fileStatus[status] || [];
@@ -105,7 +105,7 @@ const validateFilesObject = (filePart: FilePart) => {
 
   if (nameExistCount && !extensionExistCount) {
     throw new Error(
-      `fileObject names "exist" is not empty, while extensions "exist" is empty, ` +
+      'fileObject names "exist" is not empty, while extensions "exist" is empty, ' +
         `that doesn't make sense: ${fileObjectRepr}.`
     );
   }
@@ -117,12 +117,12 @@ const assertErrorListFilesMessage = (
   dir: string
 ) => {
   const msg = `file ${fileName} unexpectedly ${
-    !exist ? "EXISTS " : "DOES NOT EXIST "
+    !exist ? 'EXISTS ' : 'DOES NOT EXIST '
   }in ${dir}.`;
   try {
     return `${msg} Existing files were: \n         ${fs
       .readdirSync(dir)
-      .join("\n         ")}.`;
+      .join('\n         ')}.`;
   } catch (err) {
     return `${msg} Directory "${dir}" does not exist.`;
   }
@@ -280,13 +280,13 @@ const assertProviderFontFiles = (
   assertFontFiles(filePart, rootPath);
 };
 
-export const LOCAL_TMP_DIR = path.join(__dirname, "tmp");
+export const LOCAL_TMP_DIR = path.join(__dirname, 'tmp');
 
 export const getTemp = () => {
   mdSync(LOCAL_TMP_DIR);
   return tmp.dirSync({
     tmpdir: LOCAL_TMP_DIR,
-    prefix: "ssw-test-",
+    prefix: 'ssw-test-',
     unsafeCleanup: true,
   });
 };
@@ -341,7 +341,7 @@ const runCombineModeFilesCheck = (
     });
   }
 
-  if (typeof outputChecks.metaDataExist !== "undefined") {
+  if (typeof outputChecks.metaDataExist !== 'undefined') {
     assert.equal(
       fs.existsSync(path.join(outputDir, METADATA_FILE_NAME)),
       outputChecks.metaDataExist,
@@ -415,7 +415,7 @@ const runCombineModeFilesCheck = (
     );
   }
 
-  if (typeof outputChecks.metaDataExist !== "undefined") {
+  if (typeof outputChecks.metaDataExist !== 'undefined') {
     assert.equal(
       fs.existsSync(path.join(outputDir, METADATA_FILE_NAME)),
       outputChecks.metaDataExist,
@@ -427,7 +427,7 @@ const runCombineModeFilesCheck = (
     );
   }
 
-  if (typeof outputChecks.webPageFileExist !== "undefined") {
+  if (typeof outputChecks.webPageFileExist !== 'undefined') {
     assert.equal(
       fs.existsSync(path.join(outputDir, FONT_WEB_PAGE_FILE_NAME)),
       outputChecks.webPageFileExist,
@@ -454,7 +454,7 @@ const runProviderModeFilesCheck = (
     assertProviderFontFiles(fObj, outputDir, providerSubPath);
   });
 
-  if (typeof outputChecks.licenseFilesExist !== "undefined") {
+  if (typeof outputChecks.licenseFilesExist !== 'undefined') {
     assert.equal(
       fs.existsSync(path.join(outputDir, providerSubPath, LICENSE_FILE_NAME)),
       outputChecks.licenseFilesExist,
@@ -466,7 +466,7 @@ const runProviderModeFilesCheck = (
     );
   }
 
-  if (typeof outputChecks.metaDataExist !== "undefined") {
+  if (typeof outputChecks.metaDataExist !== 'undefined') {
     assert.equal(
       fs.existsSync(path.join(outputDir, providerSubPath, METADATA_FILE_NAME)),
       outputChecks.metaDataExist,
@@ -478,7 +478,7 @@ const runProviderModeFilesCheck = (
     );
   }
 
-  if (typeof outputChecks.webPageFileExist !== "undefined") {
+  if (typeof outputChecks.webPageFileExist !== 'undefined') {
     assert.equal(
       fs.existsSync(
         path.join(outputDir, providerSubPath, FONT_WEB_PAGE_FILE_NAME)
@@ -506,11 +506,11 @@ const getOptions = (
   params.options.loggerOptions = params.options.loggerOptions || {};
   params.options.loggerOptions.silent = !debug;
 
-  if (typeof params.options.loggerOptions.level === "undefined") {
-    if (debug) params.options.loggerOptions.level = "debug";
+  if (typeof params.options.loggerOptions.level === 'undefined') {
+    if (debug) params.options.loggerOptions.level = 'debug';
   }
 
-  if (typeof params.options.loggerOptions.level !== "undefined")
+  if (typeof params.options.loggerOptions.level !== 'undefined')
     params.options.loggerOptions.silent = false;
 
   const subset = params.subset,
@@ -613,8 +613,8 @@ export const MDI_TEST_CHECKS_WITH_PACKAGE_OUTPUT: CombineModeFileCheck = {
         exist: [
           COMBINED_CSS_NAME,
           DEFAULT_COMBINE_FILE_NAME,
-          "mdi-normal",
-          "mdi-outline",
+          'mdi-normal',
+          'mdi-outline',
         ],
       },
       extensions: { exist: DEFAULT_CSS_OUTPUT_EXTENSIONS },
@@ -634,8 +634,8 @@ export const MDI_TEST_CHECKS_WITH_PACKAGE_OUTPUT: CombineModeFileCheck = {
         names: {
           exist: [
             COMBINED_CSS_NAME,
-            "mdi-normal",
-            "mdi-outline",
+            'mdi-normal',
+            'mdi-outline',
             MDI_DEFAULT_FONT_FILE_NAME,
           ],
         },

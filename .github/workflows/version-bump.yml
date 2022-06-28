@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: "0"
+          fetch-depth: '0'
       - name: Pull all tags from Lerna semantic release
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: Use Node.js ${{ matrix.node-version }}

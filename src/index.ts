@@ -2,8 +2,8 @@
  * Author: Dong Zhuang <dzhuang.scut@gmail.com>
  */
 
-import { getLogger, mergeObjectArrayValues } from "./utils/utils";
-import { join as pathJoin } from "path";
+import { getLogger, mergeObjectArrayValues } from './utils/utils';
+import { join as pathJoin } from 'path';
 import {
   DEFAULT_COMBINE_FILE_NAME,
   DEFAULT_COMBINE_FONT_NAME,
@@ -13,14 +13,14 @@ import {
   DEFAULT_WRITE_OUT_FILES,
   PACKAGES_OUTPUT_DIR,
   WEBFONTS_DIR_NAME,
-} from "./providers/constants";
-import { ConfigError } from "./utils/errors";
-import { SubsetProvider } from "./providers/base";
-import { SubsetIconfont } from "./types";
-import { RenderContext } from "./process/types/RenderContext";
-import { MakeFontResult } from "./process/types/MakeFontResult";
+} from './providers/constants';
+import { ConfigError } from './utils/errors';
+import { SubsetProvider } from './providers/base';
+import { SubsetIconfont } from './types';
+import { RenderContext } from './process/types/RenderContext';
+import { MakeFontResult } from './process/types/MakeFontResult';
 
-import render from "./process/render";
+import render from './process/render';
 
 /**
  * @name subsetIconfont
@@ -36,7 +36,7 @@ import render from "./process/render";
  */
 const subsetIconfont: SubsetIconfont = (
   providerInstances,
-  outputDir = "./output",
+  outputDir = './output',
   options = {}
 ) => {
   if (!Array.isArray(providerInstances)) {
@@ -57,8 +57,8 @@ const subsetIconfont: SubsetIconfont = (
   });
 
   if (
-    typeof options !== "undefined" &&
-    !(typeof options === "object" && options !== null)
+    typeof options !== 'undefined' &&
+    !(typeof options === 'object' && options !== null)
   ) {
     throw new ConfigError(
       `iconFontSubset options must be an object (if provided）, while got a ${typeof options}: "${options}".`
@@ -66,7 +66,7 @@ const subsetIconfont: SubsetIconfont = (
   }
 
   options.loggerOptions =
-    typeof options.loggerOptions === "undefined" ? {} : options.loggerOptions;
+    typeof options.loggerOptions === 'undefined' ? {} : options.loggerOptions;
   options.loggerOptions.level =
     options.loggerOptions.level || DEFAULT_LOGGER_LEVEL;
 
@@ -74,49 +74,49 @@ const subsetIconfont: SubsetIconfont = (
 
   const logger = getLogger(options.loggerOptions);
 
-  logger.info("Process started");
+  logger.info('Process started');
 
   const fontFileName = options.fontFileName || DEFAULT_COMBINE_FILE_NAME,
     fontName = options.fontName || DEFAULT_COMBINE_FONT_NAME,
     formats = options.formats || DEFAULT_OUTPUT_FORMATS,
     generateCssMap =
-      "undefined" === typeof options.generateCssMap
+      'undefined' === typeof options.generateCssMap
         ? true
         : options.generateCssMap,
     generateMinCss =
-      "undefined" === typeof options.generateMinCss
+      'undefined' === typeof options.generateMinCss
         ? true
         : options.generateMinCss,
     loggerOptions = options.loggerOptions,
     prefix = options.prefix || DEFAULT_COMBINE_PREFIX,
-    sort = "undefined" === typeof options.sort ? true : options.sort,
+    sort = 'undefined' === typeof options.sort ? true : options.sort,
     webfontDir = options.webfontDir || WEBFONTS_DIR_NAME;
 
   const initializedProviderObjects: SubsetProvider[] = [];
 
   for (const providerObject of providerInstances) {
-    providerObject.setLoggerOptions("level", loggerOptions.level);
-    providerObject.setLoggerOptions("silent", loggerOptions.silent);
+    providerObject.setLoggerOptions('level', loggerOptions.level);
+    providerObject.setLoggerOptions('silent', loggerOptions.silent);
 
-    providerObject.setOptions("sort", sort);
-    providerObject.setOptions("formats", formats);
-    providerObject.setOptions("generateCssMap", generateCssMap, true);
-    providerObject.setOptions("generateMinCss", generateMinCss, true);
+    providerObject.setOptions('sort', sort);
+    providerObject.setOptions('formats', formats);
+    providerObject.setOptions('generateCssMap', generateCssMap, true);
+    providerObject.setOptions('generateMinCss', generateMinCss, true);
 
     // all fontName and prefix must be consistent. This is required
     // for using icons from multiple packages
-    providerObject.setOptions("fontName", fontName, true);
-    providerObject.setOptions("prefix", prefix, true);
+    providerObject.setOptions('fontName', fontName, true);
+    providerObject.setOptions('prefix', prefix, true);
 
-    providerObject.setOptions("webfontDir", webfontDir, true);
+    providerObject.setOptions('webfontDir', webfontDir, true);
 
     // Don't out put any package files if outputPackage is false
     providerObject.setOptions(
-      "writeOutFiles",
+      'writeOutFiles',
       outputPackages ? options.writeOutFiles : [],
       !outputPackages
     );
-    providerObject.setOptions("addHashInFontUrl", options.addHashInFontUrl);
+    providerObject.setOptions('addHashInFontUrl', options.addHashInFontUrl);
 
     initializedProviderObjects.push(providerObject);
   }
@@ -145,7 +145,7 @@ const subsetIconfont: SubsetIconfont = (
       .then((results: MakeFontResult[]) => {
         if (!results.length) return resolve({} as MakeFontResult);
 
-        logger.info("Started combining CSS");
+        logger.info('Started combining CSS');
 
         const renderContext: RenderContext = results[0];
         renderContext.writeOutFiles =
@@ -182,6 +182,6 @@ const subsetIconfont: SubsetIconfont = (
 };
 
 export { subsetIconfont };
-export * from "./types";
-export * from "./providers/providers";
+export * from './types';
+export * from './providers/providers';
 export default subsetIconfont;

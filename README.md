@@ -30,14 +30,14 @@ Subset from a single iconfont, for example:
 ```js
 // npm install -D @mdi/font @mdi/svg
 
-import { MdiProvider } from "subset-iconfont";
+import { MdiProvider } from 'subset-iconfont';
 
-const mdi = new MdiProvider(["plus", "circle", "check"], {
-  formats: ["ttf", "woff2"],
+const mdi = new MdiProvider(['plus', 'circle', 'check'], {
+  formats: ['ttf', 'woff2'],
 });
 
-mdi.makeFonts("./outputDir").then((result) => {
-  console.log("Done!");
+mdi.makeFonts('./outputDir').then((result) => {
+  console.log('Done!');
 });
 ```
 
@@ -48,14 +48,14 @@ Subset from multiple iconfonts, and combine the css/scss files, for example:
 ```js
 // npm install -D @fortawesome/fontawesome-free @mdi/font @mdi/svg
 
-import { subsetIconfont, MdiProvider, FaFreeProvider } from "subset-iconfont";
+import { subsetIconfont, MdiProvider, FaFreeProvider } from 'subset-iconfont';
 
-const mdi = new MdiProvider(["plus", "circle", "check"]),
-  fa = new FaFreeProvider(["clock", "500px"]);
+const mdi = new MdiProvider(['plus', 'circle', 'check']),
+  fa = new FaFreeProvider(['clock', '500px']);
 
-subsetIconfont([mdi, fa], "./outputDir", { formats: ["ttf", "woff2"] }).then(
+subsetIconfont([mdi, fa], './outputDir', { formats: ['ttf', 'woff2'] }).then(
   (result) => {
-    console.log("Done!");
+    console.log('Done!');
   }
 );
 ```
@@ -71,10 +71,10 @@ subsetIconfont([mdi, fa], "./outputDir", { formats: ["ttf", "woff2"] }).then(
   ```js
   // npm install -D @fortawesome/fontawesome-free @mdi/font @mdi/svg
 
-  import { MdiProvider, FaFreeProvider } from "subset-iconfont";
+  import { MdiProvider, FaFreeProvider } from 'subset-iconfont';
 
-  const mdi = new MdiProvider(["plus", "circle", "check"]),
-    fa = new FaFreeProvider(["clock", "500px"]);
+  const mdi = new MdiProvider(['plus', 'circle', 'check']),
+    fa = new FaFreeProvider(['clock', '500px']);
   ```
 
   where `mdi` and `fa` are what we called `SubsetProvider` instances.

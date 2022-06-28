@@ -1,19 +1,19 @@
-import { SubsetItem } from "./SubsetItem";
+import { SubsetItem } from './SubsetItem';
 
 export type AllMetaData = { [key: SubsetItem]: any };
 
 export declare type Style =
-  | "thin"
-  | "light"
-  | "regular"
-  | "solid"
-  | "brands"
-  | "normal"
-  | "filled"
-  | "outlined"
-  | "round"
-  | "sharp"
-  | "two-tone";
+  | 'thin'
+  | 'light'
+  | 'regular'
+  | 'solid'
+  | 'brands'
+  | 'normal'
+  | 'filled'
+  | 'outlined'
+  | 'round'
+  | 'sharp'
+  | 'two-tone';
 export declare type Styles = Array<Style>;
 export type SVGData = string | undefined;
 export declare type SVGDataObj = {

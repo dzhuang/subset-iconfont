@@ -1,15 +1,15 @@
-import { MetaDataset, Style } from "../../types/Metadata";
-import { Logger } from "../../types/Logger";
-import { Formats } from "./SubsetFunc";
+import { MetaDataset, Style } from '../../types/Metadata';
+import { Logger } from '../../types/Logger';
+import { Formats } from './SubsetFunc';
 
-export declare type BlobCategory = "webfonts" | "scss" | "css" | "licenses";
+export declare type BlobCategory = 'webfonts' | 'scss' | 'css' | 'licenses';
 export declare type BlobObject = Record<BlobCategory, MakeFontBlob[]>;
 export declare type MakeFontBlob = {
   dir: string;
   name: string;
   data: Buffer | string;
 };
-export declare type WriteOutFile = BlobCategory | "web" | "metadata";
+export declare type WriteOutFile = BlobCategory | 'web' | 'metadata';
 export declare type WriteOutFiles = Array<WriteOutFile>;
 declare type RenderContextBase = {
   prefix: string;

@@ -1,6 +1,6 @@
-import { LoggerOptions } from "./Logger";
-import { WriteOutFiles } from "../process/types/RenderContext";
-import { Formats } from "../process/types/SubsetFunc";
+import { LoggerOptions } from './Logger';
+import { WriteOutFiles } from '../process/types/RenderContext';
+import { Formats } from '../process/types/SubsetFunc';
 
 export declare type ProviderOptions = {
   formats?: Formats;

@@ -1,14 +1,14 @@
-import { SubsetItem } from "../../src/types/SubsetItem";
-import { ProviderOptions } from "../../src/types/ProviderOptions";
-import { SubsetOptions } from "../../src/types/SubsetOptions";
+import { SubsetItem } from '../../src/types/SubsetItem';
+import { ProviderOptions } from '../../src/types/ProviderOptions';
+import { SubsetOptions } from '../../src/types/SubsetOptions';
 
 export type PartValues = string[];
 
-export type StatusName = "exist" | "nonExist";
+export type StatusName = 'exist' | 'nonExist';
 
 export type FileStatus = Partial<Record<StatusName, PartValues>>;
 
-export type PartName = "names" | "extensions";
+export type PartName = 'names' | 'extensions';
 
 export type FilePart = Record<PartName, FileStatus>;
 

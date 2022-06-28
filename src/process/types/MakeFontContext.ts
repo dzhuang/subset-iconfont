@@ -1,6 +1,6 @@
-import { Logger } from "../../types/Logger";
-import { ProviderOptions } from "../../types/ProviderOptions";
-import { Style2FontFileMap } from "../../types/Provider";
+import { Logger } from '../../types/Logger';
+import { ProviderOptions } from '../../types/ProviderOptions';
+import { Style2FontFileMap } from '../../types/Provider';
 
 export type MakeFontContext = {
   style2FontFileMap: Style2FontFileMap;

@@ -1,4 +1,4 @@
-import { MetaDataset } from "../../types/Metadata";
+import { MetaDataset } from '../../types/Metadata';
 
 export declare type WebRenderContext = {
   prefix: string;

@@ -2,17 +2,17 @@ import {
   DEFAULT_STYLE,
   DEFAULT_WRITE_OUT_FILES,
   WEBFONTS_DIR_NAME,
-} from "../providers/constants";
-import { getFontWeight } from "./utils";
-import { MetaDataset, Style } from "../types/Metadata";
-import { BlobObject, RenderContext } from "./types/RenderContext";
-import { MakeFontResult } from "./types/MakeFontResult";
-import { MakeFontContext } from "./types/MakeFontContext";
-import { Formats, SubsetResult, SubsetTask } from "./types/SubsetFunc";
+} from '../providers/constants';
+import { getFontWeight } from './utils';
+import { MetaDataset, Style } from '../types/Metadata';
+import { BlobObject, RenderContext } from './types/RenderContext';
+import { MakeFontResult } from './types/MakeFontResult';
+import { MakeFontContext } from './types/MakeFontContext';
+import { Formats, SubsetResult, SubsetTask } from './types/SubsetFunc';
 
-import subset from "./subset";
-import render from "./render";
-import { Style2FontFileMap } from "../types/Provider";
+import subset from './subset';
+import render from './render';
+import { Style2FontFileMap } from '../types/Provider';
 
 type SubsetTasks = (
   subsetMeta: MetaDataset,
@@ -104,11 +104,11 @@ const generateFont: GenerateFont = async (outputDir, subsetMeta, mfContext) => {
         fontFileName: fontFileName,
         SCSSTargets: fontFaceFileNames,
         generateMinCss:
-          typeof options.generateMinCss === "undefined"
+          typeof options.generateMinCss === 'undefined'
             ? true
             : options.generateMinCss,
         generateSourceMap:
-          typeof options.generateCssMap === "undefined"
+          typeof options.generateCssMap === 'undefined'
             ? true
             : options.generateCssMap,
         logger: logger,
@@ -124,7 +124,7 @@ const generateFont: GenerateFont = async (outputDir, subsetMeta, mfContext) => {
         })
         .catch(reject)
         .then(() => {
-          logger.info(`finished.`);
+          logger.info('finished.');
         });
     });
   });

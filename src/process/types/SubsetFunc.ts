@@ -1,6 +1,6 @@
-import { Style } from "../../types/Metadata";
-import { MakeFontContext } from "./MakeFontContext";
-import { MakeFontBlob } from "./RenderContext";
+import { Style } from '../../types/Metadata';
+import { MakeFontContext } from './MakeFontContext';
+import { MakeFontBlob } from './RenderContext';
 
 export declare type IconData = {
   name: string;
@@ -24,7 +24,7 @@ export type SubsetTask = {
   context: MakeFontContext;
 };
 
-export type Format = "woff" | "woff2" | "ttf" | "eot";
+export type Format = 'woff' | 'woff2' | 'ttf' | 'eot';
 export type Formats = Array<Format>;
 
 export type ToSubsetFontsOptions = {
