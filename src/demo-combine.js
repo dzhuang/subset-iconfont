@@ -55,5 +55,5 @@ subsetIconfont([fa, mi, mdi, bi], './output', {
   formats: ['woff2', 'ttf'],
   // loggerOptions: {level: 'debug'}
 }).then((result) => {
-  console.log(result);
+  // console.log(result);
 });

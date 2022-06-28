@@ -40,12 +40,16 @@ subsetIconfont([mdi, fa], './outputDir', { formats: ['ttf', 'woff2'] }).then(
 );
 ```
 
-Or run
+## Demo
+
+Run
 
 ```shell
 npm install --save-dev @fortawesome/fontawesome-free @mdi/font @mdi/svg bootstrap-icons material-icons @material-design-icons/svg
 npm run demo
 ```
+
+See results in `output` and `output-standalone` open the `index.html` to see the usage of the generated icons.
 
 ## `SubsetProvider`
 
