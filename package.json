@@ -9,7 +9,17 @@
     "webfont",
     "subset",
     "icon",
-    "icons"
+    "icons",
+    "iconfont",
+    "font-awesome",
+    "subsetter",
+    "google-material-icons",
+    "material-design-icons",
+    "bootstrap-icons",
+    "metadata",
+    "font-license",
+    "reduce-size",
+    "multiple-iconfont"
   ],
   "scripts": {
     "clean": "rimraf dist output output-standalone",
