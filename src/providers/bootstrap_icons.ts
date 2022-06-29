@@ -1,4 +1,4 @@
-import { SubsetProvider } from './base';
+import { ProviderConstructor } from './base';
 import {
   DEFAULT_STYLE,
   BOOTSTRAP_ICON_CSS_PREFIX,
@@ -15,9 +15,9 @@ import { SubsetItem } from '../types/SubsetItem';
 import { ProviderOptions } from '../types/ProviderOptions';
 
 /**
- * SubsetProvider for Bootstrap icons.
+ * ProviderConstructor for Bootstrap icons.
  */
-class BiProvider extends SubsetProvider implements ProviderInterface {
+class BiProvider extends ProviderConstructor implements ProviderInterface {
   packageName = BOOTSTRAP_ICON_PACKAGE_NAME;
   cssPrefix = BOOTSTRAP_ICON_CSS_PREFIX;
   fontName = BOOTSTRAP_ICON_FONT_NAME;

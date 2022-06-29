@@ -26,7 +26,6 @@ export declare type FontFaceRenderContext = RenderContextBase & {
 export declare type RenderContext = RenderContextBase & {
   icons: MetaDataset;
   fontWeightDefault: number | string;
-  fontFileName: string;
   SCSSTargets: string[];
   webfontDir: string;
   generateMinCss?: boolean;

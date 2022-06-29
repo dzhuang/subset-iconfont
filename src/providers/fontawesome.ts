@@ -2,7 +2,7 @@ import { ProviderInterface } from '../types/Provider';
 
 const yaml = require('js-yaml');
 
-import { SubsetProvider } from './base';
+import { ProviderConstructor } from './base';
 import {
   FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
   FONT_AWESOME_DEFAULT_FONT_NAME,
@@ -16,9 +16,9 @@ import { SubsetItem } from '../types/SubsetItem';
 import { ProviderOptions } from '../types/ProviderOptions';
 
 /**
- * SubsetProvider for Font Awesome Free.
+ * ProviderConstructor for Font Awesome Free.
  */
-class FaFreeProvider extends SubsetProvider implements ProviderInterface {
+class FaFreeProvider extends ProviderConstructor implements ProviderInterface {
   packageName = FONT_AWESOME_FREE_PACKAGE_NAME;
   minVersion = '5.0';
   cssPrefix = FONT_AWESOME_FREE_DEFAULT_CSS_PREFIX;

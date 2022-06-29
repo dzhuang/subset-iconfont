@@ -25,7 +25,7 @@ import { validateOptions } from '../process/utils';
 
 import generateFont from '../process/generate';
 
-export abstract class SubsetProvider implements ProviderInterface {
+export abstract class ProviderConstructor implements ProviderInterface {
   public abstract packageName: string;
   protected abstract fontName: string;
   protected abstract style2FontFileMap: Style2FontFileMap;

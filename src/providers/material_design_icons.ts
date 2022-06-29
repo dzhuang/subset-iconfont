@@ -1,4 +1,4 @@
-import { SubsetProvider } from './base';
+import { ProviderConstructor } from './base';
 import {
   DEFAULT_STYLE,
   MDI_DEFAULT_CSS_PREFIX,
@@ -16,9 +16,9 @@ import { SubsetItem } from '../types/SubsetItem';
 import { ProviderOptions } from '../types/ProviderOptions';
 
 /**
- * SubsetProvider for Material design icons.
+ * ProviderConstructor for Material design icons.
  */
-class MdiProvider extends SubsetProvider implements ProviderInterface {
+class MdiProvider extends ProviderConstructor implements ProviderInterface {
   packageName = MDI_FONT_PACKAGE_NAME;
   cssPrefix = MDI_DEFAULT_CSS_PREFIX;
   fontName = MDI_DEFAULT_FONT_NAME;

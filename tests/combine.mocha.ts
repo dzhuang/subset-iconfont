@@ -312,7 +312,7 @@ describe('General tests', () => {
   });
 });
 
-describe('SubsetProvider level options from combination mode', () => {
+describe('ProviderConstructor level options from combination mode', () => {
   it('should work when addHashInFontUrl is true', (done) => {
     const mdi = new MdiProvider(['account-circle'], {
       addHashInFontUrl: true,

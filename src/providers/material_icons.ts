@@ -1,4 +1,4 @@
-import { SubsetProvider } from './base';
+import { ProviderConstructor } from './base';
 import {
   MI_DEFAULT_CSS_PREFIX,
   MI_DEFAULT_FONT_FILE_NAME,
@@ -15,9 +15,9 @@ import { SubsetItem } from '../types/SubsetItem';
 import { ProviderOptions } from '../types/ProviderOptions';
 
 /**
- * SubsetProvider for Google Material icons.
+ * ProviderConstructor for Google Material icons.
  */
-class MiProvider extends SubsetProvider implements ProviderInterface {
+class MiProvider extends ProviderConstructor implements ProviderInterface {
   packageName = MI_FONT_PACKAGE_NAME;
   cssPrefix = MI_DEFAULT_CSS_PREFIX;
   fontName = MI_DEFAULT_FONT_NAME;

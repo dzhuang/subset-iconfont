@@ -49,11 +49,11 @@ npm install --save-dev @fortawesome/fontawesome-free @mdi/font @mdi/svg bootstra
 npm run demo
 ```
 
-See results in `output` and `output-standalone` open the `index.html` to see the usage of the generated icons.
+See results in `output` and `output-standalone`, and open the `index.html` files in browser to see the usage of the generated icons.
 
-## `SubsetProvider`
+## `ProviderConstructor`
 
-The process runs on a series of `SubsetProvider` which are constructors for different iconfont to be subset. Available SubsetProviders include:
+The process runs on a list of `ProviderInstance`, or `ProviderConstructor` instances. `ProviderConstructor`s are constructors we created for the purpose of subsetting different iconfont in a consistent way. Available `ProviderConstructor`s include:
 
 - `FaFreeProvider`
   - Source: [FontAwesome Free fonts](https://github.com/FortAwesome/Font-Awesome) by @fontawesome
@@ -77,15 +77,20 @@ The process runs on a series of `SubsetProvider` which are constructors for diff
 
 Note: For provider with styles properties, the program will extract all available style of that icon.
 
-Params to create a `ProviderInstance` are:
+The syntax to create a `ProviderInstance` is:
 
-### `subsetItem[]`
+##### `ProviderConstructor(subset: subsetItem[], options?: ProviderOptions)`
+
+### `subset`
 
 - Type: array of `string`
-- Descriptions: the icon names that will be subset from the provider. Non-existing icons will be ignored and warn in the log.
-- Note: To extra all the icons available, use `['__all__']` as the `subsetItem[]`.
+- Descriptions: the icon names that are expected to be subset from the provider. Non-existing icons will be ignored and warn in the log.
+- Note: To extra all the icons available, use `['__all__']` as the `subset`.
 
 ### `options`
+
+- Type: `ProviderOptions`
+  Allowed members include:
 
 #### `formats`
 
@@ -122,7 +127,7 @@ Params to create a `ProviderInstance` are:
 
 - Type: `string`
 - Default: `webfonts`
-- Description: The name of the sub-directory which the font files will be written to.
+- Description: The name of the sub-directory where the font files are expected be written to.
 
 #### `generateMinCss`
 
@@ -165,7 +170,7 @@ Params to create a `ProviderInstance` are:
 
 ### Standalone mode
 
-##### `ProviderInstance.makeFonts(outputDir) => Promise<MakeFontResult>`
+##### `ProviderInstance.makeFonts(outputDir): Promise<MakeFontResult>`
 
 By `Standalone`, we mean subset from a `ProviderInstance`.
 
@@ -192,12 +197,12 @@ mdi.makeFonts('./outputDir').then((result) => {
 
 ### Combination mode
 
-##### `subsetIconfont(providerInstance[], outputDir, options) => Promise<MakeFontResult>`
+##### `subsetIconfont(providerInstances: ProviderInstance[], outputDir: string, options?: SubsetOptions): Promise<MakeFontResult>`
 
-#### `providerInstance[]`
+#### `providerInstances`
 
 - Type: `array`
-- Description: An array of `SubsetProvider` instances
+- Description: An array of `ProviderInstance` instances
 
 #### `outputDir`
 
@@ -206,8 +211,10 @@ mdi.makeFonts('./outputDir').then((result) => {
 
 #### `options`
 
-The `options` for combination mode has the same options as that of the standalone mode, with an extra option
-`outputPackages`.
+- Type: `ProviderOptions`
+
+The `options` of type `ProviderOptions` largely replicates the `options` (of type `ProviderOptions`) when creating a
+`ProviderInstance` , with an extra option `outputPackages`.
 
 ##### `outputPackages`
 
@@ -219,8 +226,78 @@ The `options` for combination mode has the same options as that of the standalon
 If not configured, `fontName` will use `"Subset Iconfont"`, and `prefix` will use `"si"`,
 and `fontFileName` will use `"subset-iconfont"`, as default value.
 
-Notice: `fontName`, `prefix` under combination mode will override the options from `SubsetProvider` instances
+Notice: `fontName`, `prefix` under combination mode will override the `options` set in `ProviderInstance`s
 so that we can use all subset icons in a consistent way irrespective of which icon comes from which provider (package).
+
+### Result
+
+- Type: `MakeFontResult`
+
+Members include:
+
+#### prefix
+
+- Type: `string`
+- Description: The css class prefix when using the generated CSS/SCSS.
+
+#### fontName
+
+- Type: `string`
+- Description: see the description of `fontName` in `ProviderOptions`.
+
+#### formats
+
+- Type: array of `string`
+- Description: the format of fonts generated.
+
+#### fontFileName
+
+- Type: `string`
+- Description: see the description of `fontFileName` in `ProviderOptions`.
+
+#### icons
+
+- Type: `object`
+- Description: The metadata of all icons from the subset process.
+
+#### webfontDir
+
+- Type: `string`
+- Description: The name of the sub-directory where the font files are expected to exist in.
+
+#### generateMinCss
+
+Same as `generateMinCss` in `ProviderOptions`.
+
+#### generateSourceMap
+
+Same as `generateSourceMap` in `ProviderOptions`.
+
+#### license
+
+- Type: `string` or `null`
+- Description: The content of the font license in `standalone` mode (for a single `subsetProvider`). The value
+  will be `null` under `combination` mode.
+
+#### logger
+
+- Type: winston `Logger` object
+- Description: The logger used in the process
+
+#### blobObject
+
+- Type: array of `object`s
+- Description: Each of the `object` contains the generated category (in terms of webfonts, SCSS, CSS and font LICENSES)
+  of the blob, and the information including the `dir`, `name` and `data` (`string` or `Buffer`).
+
+#### writeOutFiles
+
+See `writeOutFiles` in `ProviderOptions`.
+
+#### fontWeightDefault
+
+- Type: `string` or `number`
+- Description: The default `fontWeight` used in the generated CSS.
 
 ## Usage of Icons generate
 

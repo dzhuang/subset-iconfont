@@ -15,7 +15,7 @@ import {
   WEBFONTS_DIR_NAME,
 } from './providers/constants';
 import { ConfigError } from './utils/errors';
-import { SubsetProvider } from './providers/base';
+import { ProviderConstructor } from './providers/base';
 import { SubsetIconfont } from './types';
 import { RenderContext } from './process/types/RenderContext';
 import { MakeFontResult } from './process/types/MakeFontResult';
@@ -28,7 +28,7 @@ import render from './process/render';
  * and generate webfonts for each, along with css/scss, with the Font-Awesome styles.
  * See "./demo-combine.js" for use case examples.
  *
- * @param providerInstances an array of SubsetProvider Objects. Currently, available providers include
+ * @param providerInstances an array of ProviderConstructor Objects. Currently, available providers include
  * `MdiProvider`, `FaFreeProvider`, `BiProvider` and `BiProvider`.
  * @param outputDir Output directory of generated webfonts, along with css/scss, metadata and font license,
  * defaults to `./output`.
@@ -49,7 +49,7 @@ const subsetIconfont: SubsetIconfont = (
       return resolve({} as MakeFontResult);
     });
   providerInstances.forEach((obj: any) => {
-    if (!(obj instanceof SubsetProvider)) {
+    if (!(obj instanceof ProviderConstructor)) {
       throw new ConfigError(
         `Members in subsetObject must be Provider instance objects, while got a ${typeof obj}: "${obj}".`
       );
@@ -92,7 +92,7 @@ const subsetIconfont: SubsetIconfont = (
     sort = 'undefined' === typeof options.sort ? true : options.sort,
     webfontDir = options.webfontDir || WEBFONTS_DIR_NAME;
 
-  const initializedProviderObjects: SubsetProvider[] = [];
+  const initializedProviderObjects: ProviderConstructor[] = [];
 
   for (const providerObject of providerInstances) {
     providerObject.setLoggerOptions('level', loggerOptions.level);
@@ -136,7 +136,7 @@ const subsetIconfont: SubsetIconfont = (
 
   return new Promise((resolve, reject) => {
     Promise.all(
-      initializedProviderObjects.map((providerObject: SubsetProvider) => {
+      initializedProviderObjects.map((providerObject: ProviderConstructor) => {
         return providerObject.makeFonts(
           pathJoin(outputDir, PACKAGES_OUTPUT_DIR)
         );
