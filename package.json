@@ -1,6 +1,6 @@
 {
   "name": "subset-iconfont",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Utility to generate subset of webfonts from subsets of multiple iconfont and use FontAwesome style css.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -64,7 +64,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dzhuang/subset-iconfont.git"
+    "url": "https://github.com/dzhuang/subset-iconfont.git"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
