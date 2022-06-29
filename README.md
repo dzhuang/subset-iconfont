@@ -85,12 +85,13 @@ The syntax to create a `ProviderInstance` is:
 
 - Type: array of `string`
 - Descriptions: the icon names that are expected to be subset from the provider. Non-existing icons will be ignored and warn in the log.
-- Note: To extra all the icons available, use `['__all__']` as the `subset`.
+- Note: To extract all the icons available, use `['__all__']` as the `subset`.
 
 ### `options`
 
 - Type: `ProviderOptions`
-  Allowed members include:
+
+Allowed members:
 
 #### `formats`
 
@@ -111,8 +112,8 @@ The syntax to create a `ProviderInstance` is:
 - Default: The value from the provider.
 - Description: A string which can be used a file name, which will be used as:
   - The basename of the font file, for provider without multiple styles;
-  - The basename of the css file which included all styles and definitions of icons;
-  - The major part of the basename of the font-face css file, for provider without multiple styles;
+  - The basename of the css file which included the main style and definitions of icons;
+  - The major part of the basename of the font-face css file, for providers without multiple styles;
 - Note: For providers with multiple styles, the font file name will be the concatenation of
   `cssPrefix` property of the provider, `style` used and `fontWeight` of that style, while the font-face
   file base name will be the concatenation of `cssPrefix` and `style`.
@@ -150,7 +151,7 @@ The syntax to create a `ProviderInstance` is:
 #### `writeOutFiles`
 
 - Type: `array`
-- Default: `[‘webfonts‘, ‘scss‘, ‘css‘, ‘licenses‘, 'web', 'metadata']`
+- Default: `['webfonts', 'scss', 'css', 'licenses', 'web', 'metadata']`
 - Description: The categories of files which will be physically written to disk:
   - `webfonts`: The font files generated
   - `scss`: The scss files
@@ -305,7 +306,7 @@ See generated `index.html` and FontAwesome free [documentation](https://fontawes
 
 ## Roadmap
 
-- Extend the use case beyond commonJS, for example, for `react.js`, and that's why we've prepared the glyph data of each icon;
+- Extend the use case beyond commonJS, for example, `react.js`, and that's why we've prepared the glyph data of each icon;
 - More tests;
 - Improved docs;
 - Better webpage (index.html) presentation, include search and select abilities.
