@@ -212,9 +212,9 @@ mdi.makeFonts('./outputDir').then((result) => {
 
 #### `options`
 
-- Type: `ProviderOptions`
+- Type: `SubsetOptions`
 
-The `options` of type `ProviderOptions` largely replicates the `options` (of type `ProviderOptions`) when creating a
+The `options` of type `SubsetOptions` largely replicates the `options` (of type `ProviderOptions`) when creating a
 `ProviderInstance` , with an extra option `outputPackages`.
 
 ##### `outputPackages`
