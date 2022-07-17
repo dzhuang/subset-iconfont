@@ -8,7 +8,7 @@ Subset multiple iconfont packages and generate CSS/SCSS.
 
 ## Features
 
-- Subset from multiple iconfont npm packages;
+- Subset from multiple iconfont npm packages, including [FontAwesome Free fonts](https://github.com/FortAwesome/Font-Awesome), [Material Design Icons](https://materialdesignicons.com/), [Bootstrap Icons](https://icons.getbootstrap.com/) and [Google Material Icons](https://fonts.google.com/icons);
 - Supported output font formats: `woff2`, `woff`, `eot`, `ttf`;
 - Auto generate font LICENSE files for font used;
 - Auto generate FontAwesome styled CSS/SCSS, which means the subset icons can be used like FontAwesome icons, under FontAwesome free license;
