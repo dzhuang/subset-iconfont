@@ -23,6 +23,7 @@ import {
 import { WebRenderContext } from './types/WebRenderContext';
 import { MakeFontResult } from './types/MakeFontResult';
 import * as Buffer from 'buffer';
+import {CssChoice} from "./types/CssChoices";
 
 const sass = require('node-sass');
 const pkjJson = require('../../package.json');
@@ -54,13 +55,23 @@ const createScssFiles = (
   const usedStyles = getUsedStyle(context.icons),
     outputPath = pathJoin(tempDir.name, SCSS_FOLDER_NAME);
 
+  context.cssChoices = context.cssChoices || [
+    'animated', 'bordered-pulled', 'fixed-width', 'list',
+    'rotated-flipped', 'screen-reader', 'sizing', 'stacked']
+
   const updatedRenderContext = {
     ...context,
     styles: usedStyles,
     scssTargets: [context.fontFileName, ...context.SCSSTargets],
   };
 
-  SCSS_FILE_NAMES.forEach((templateBasename) => {
+  const scssFileNames = ['main', 'all', '_core', '_variables', '_mixins', '_functions', '_icons']
+
+  context.cssChoices.forEach((cssChoice)=>{
+    scssFileNames.push(`_${cssChoice}`)
+  })
+
+  scssFileNames.forEach((templateBasename) => {
     const outputFileName =
         templateBasename === mainFileName
           ? `${context.fontFileName}.scss`
@@ -221,6 +232,7 @@ const writeBlobs = (
         author: pkjJson.author,
         fontName: context.fontName,
         cacheString: cssHash,
+        cssChoices: context.cssChoices,
       },
       indexHtml = renderEnv.render('web.njk', webRenderContext);
 

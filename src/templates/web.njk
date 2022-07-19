@@ -392,154 +392,164 @@ MIT License Copyright (c) 2019 Austin Andrews #}
         <h2 class="extras">Extras</h2>
 
         <p class="extras">The helper CSS classes are listed below.</p>
+        {% if 'sizing' in cssChoices %}
+          <section>
+            <h3>Size</h3>
 
-        <section>
-          <h3>Size</h3>
-
-          <div class="examples examples-size">
-            {% set sizes = ["2xs", "sm", "1x", "lg", "2x", "3x", "5x"] %} {% for
-              size in sizes %}
-            <div>
+            <div class="examples examples-size">
+              {% set sizes = ["2xs", "sm", "1x", "lg", "2x", "3x", "5x"] %} {% for
+                size in sizes %}
               <div>
-                <i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-{{ size }} {{ prefix }}-{{ name }} clipboard-copy"
-                   data-class="{{ prefix }}-{{ name }}"
-                   data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-{{ size }} {{ prefix }}-{{ name }}"></i>'></i>
+                <div>
+                  <i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-{{ size }} {{ prefix }}-{{ name }} clipboard-copy"
+                     data-class="{{ prefix }}-{{ name }}"
+                     data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-{{ size }} {{ prefix }}-{{ name }}"></i>'></i>
+                </div>
+                <div>
+                  <code class="clipboard-copy" data-class="{{ prefix }}-{{ name }}"
+                        data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-{{ size }} {{ prefix }}-{{ name }}">{{ prefix }}-{{ size }}</code>
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+
+        {% if 'rotated-flipped' in cssChoices %}
+          <section>
+            <h3>Rotate</h3>
+
+            <div class="examples">
+              <div>
+                <div>
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-{{ name }}"
+                    data-class="{{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+              </div>
+              {% set degrees = [90, 180, 270] %} {% for degree in degrees %}
+              <div>
+                <div>
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-rotate-{{ degree }} {{ prefix }}-{{ name }} clipboard-copy"
+                    data-class="{{ prefix }}-{{ name }}"
+                    data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-rotate-{{ degree }} {{ prefix }}-{{ name }}"></i>'
+                  ></i>
+                </div>
+                <div>
+                  <code
+                    class="clipboard-copy"
+                    data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-rotate-{{ degree }} {{ prefix }}-{{ name }}"
+                    data-class="{{ prefix }}-{{ name }}"
+                  >{{ prefix }}-rotate-{{ degree }}</code
+                  >
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+
+            <h3>Flip</h3>
+
+            <div class="examples">
+              <div>
+                <div>
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-{{ name }}"
+                    data-class="{{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+              </div>
+              {% set directions = ["horizontal", "vertical"] %} {% for direction in
+                directions %}
+              <div>
+                <div>
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-flip-{{ direction }} {{ prefix }}-{{ name }} clipboard-copy"
+                    data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-flip-{{ direction }} {{ prefix }}-{{ name }}"></i>'
+                    data-class="{{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+                <div>
+                  <code
+                    class="clipboard-copy"
+                    data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-flip-{{ direction }} {{ prefix }}-{{ name }}"
+                    data-class="{{ prefix }}-{{ name }}"
+                  >{{ prefix }}-flip-{{ direction }}</code
+                  >
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+
+        {% if 'animated' in cssChoices %}
+          <section>
+            <h3>Spin</h3>
+
+            <div class="examples">
+              <div>
+                <div>
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-3x {{ prefix }}-spin {{ prefix }}-{{ name }} clipboard-copy"
+                    data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-spin {{ prefix }}-{{ name }}"></i>'
+                    data-class="{{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+                <div>
+                  <code
+                    data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-spin {{ prefix }}-{{ name }}"
+                    class="clipboard-copy"
+                  >{{ prefix }}-spin</code
+                  >
+                </div>
               </div>
               <div>
-                <code class="clipboard-copy" data-class="{{ prefix }}-{{ name }}"
-                      data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-{{ size }} {{ prefix }}-{{ name }}">{{ prefix }}-{{ size }}</code>
+                <div>
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-3x {{ prefix }}-pulse {{ prefix }}-{{ name }} clipboard-copy"
+                    data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-pulse {{ prefix }}-{{ name }}"></i>'
+                    data-class="{{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+                <div>
+                  <code
+                    data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-pulse {{ prefix }}-{{ name }}"
+                    class="clipboard-copy"
+                  >{{ prefix }}-pulse</code
+                  >
+                </div>
               </div>
             </div>
-          {% endfor %}
-          </div>
-        </section>
+          </section>
+        {% endif %}
+          <section>
+            <h3>Color</h3>
 
-        <h3>Rotate</h3>
-
-        <div class="examples">
-          <div>
-            <div>
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-{{ name }}"
-                data-class="{{ prefix }}-{{ name }}"
-              ></i>
+            <div class="examples">
+              <div>
+                <div style="background-color: red">
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-inverse {{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+                <div>
+                  <code>{{ prefix }}-inverse</code>
+                </div>
+              </div>
+              <div>
+                <div style="color: red">
+                  <i
+                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-{{ name }}"
+                  ></i>
+                </div>
+                <div>
+                  <code>{{ prefix }}-{{ name }}</code>
+                </div>
+              </div>
             </div>
-          </div>
-          {% set degrees = [90, 180, 270] %} {% for degree in degrees %}
-          <div>
-            <div>
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-rotate-{{ degree }} {{ prefix }}-{{ name }} clipboard-copy"
-                data-class="{{ prefix }}-{{ name }}"
-                data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-rotate-{{ degree }} {{ prefix }}-{{ name }}"></i>'
-              ></i>
-            </div>
-            <div>
-              <code
-                class="clipboard-copy"
-                data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-rotate-{{ degree }} {{ prefix }}-{{ name }}"
-                data-class="{{ prefix }}-{{ name }}"
-              >{{ prefix }}-rotate-{{ degree }}</code
-              >
-            </div>
-          </div>
-        {% endfor %}
-        </div>
-
-        <h3>Flip</h3>
-
-        <div class="examples">
-          <div>
-            <div>
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-{{ name }}"
-                data-class="{{ prefix }}-{{ name }}"
-              ></i>
-            </div>
-          </div>
-          {% set directions = ["horizontal", "vertical"] %} {% for direction in
-            directions %}
-          <div>
-            <div>
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-flip-{{ direction }} {{ prefix }}-{{ name }} clipboard-copy"
-                data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-flip-{{ direction }} {{ prefix }}-{{ name }}"></i>'
-                data-class="{{ prefix }}-{{ name }}"
-              ></i>
-            </div>
-            <div>
-              <code
-                class="clipboard-copy"
-                data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-flip-{{ direction }} {{ prefix }}-{{ name }}"
-                data-class="{{ prefix }}-{{ name }}"
-              >{{ prefix }}-flip-{{ direction }}</code
-              >
-            </div>
-          </div>
-        {% endfor %}
-        </div>
-
-        <h3>Spin</h3>
-
-        <div class="examples">
-          <div>
-            <div>
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-3x {{ prefix }}-spin {{ prefix }}-{{ name }} clipboard-copy"
-                data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-spin {{ prefix }}-{{ name }}"></i>'
-                data-class="{{ prefix }}-{{ name }}"
-              ></i>
-            </div>
-            <div>
-              <code
-                data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-spin {{ prefix }}-{{ name }}"
-                class="clipboard-copy"
-              >{{ prefix }}-spin</code
-              >
-            </div>
-          </div>
-          <div>
-            <div>
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-3x {{ prefix }}-pulse {{ prefix }}-{{ name }} clipboard-copy"
-                data-code='<i class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-pulse {{ prefix }}-{{ name }}"></i>'
-                data-class="{{ prefix }}-{{ name }}"
-              ></i>
-            </div>
-            <div>
-              <code
-                data-code="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-pulse {{ prefix }}-{{ name }}"
-                class="clipboard-copy"
-              >{{ prefix }}-pulse</code
-              >
-            </div>
-          </div>
-        </div>
-
-        <h3>Color</h3>
-
-        <div class="examples">
-          <div>
-            <div style="background-color: red">
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-inverse {{ prefix }}-{{ name }}"
-              ></i>
-            </div>
-            <div>
-              <code>{{ prefix }}-inverse</code>
-            </div>
-          </div>
-          <div>
-            <div style="color: red">
-              <i
-                class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-{{ name }}"
-              ></i>
-            </div>
-            <div>
-              <code>{{ prefix }}-{{ name }}</code>
-            </div>
-          </div>
-        </div>
+          </section>
       {% endif %}
     {% endfor %}
     <footer>

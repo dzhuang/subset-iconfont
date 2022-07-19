@@ -6,14 +6,21 @@ ${{ prefix }}-style-family        : '{{ fontName }}' !default;
 
 ${{ prefix }}-display             : inline-block !default;
 
+{% if 'fixed-width' in cssChoices %}
 ${{ prefix }}-fw-width            : {{ prefix }}-divide(20em, 16);
+{% endif %}
+
 ${{ prefix }}-inverse             : #fff !default;
 
+{% if 'bordered-pulled' in cssChoices %}
 ${{ prefix }}-border-color        : #eee !default;
 ${{ prefix }}-border-padding      : .2em .25em .15em !default;
 ${{ prefix }}-border-radius       : .1em !default;
 ${{ prefix }}-border-style        : solid !default;
 ${{ prefix }}-border-width        : .08em !default;
+{% endif %}
+
+{% if 'sizing' in cssChoices %}
 
 ${{ prefix }}-size-scale-2xs      : 10 !default;
 ${{ prefix }}-size-scale-xs       : 12 !default;
@@ -32,17 +39,28 @@ ${{ prefix }}-sizes: (
   "2xl"                 : ${{ prefix }}-size-scale-2xl
 ) !default;
 
+{% endif %}
+
+{% if 'list' in cssChoices %}
 ${{ prefix }}-li-width            : 2em !default;
 ${{ prefix }}-li-margin           : ${{ prefix }}-li-width * {{ prefix }}-divide(5, 4) !default;
+{% endif %}
 
+{% if 'bordered-pulled' in cssChoices %}
 ${{ prefix }}-pull-margin         : .3em !default;
+{% endif %}
 
+{# the following 2 seem only useful for two toned icons #}
 ${{ prefix }}-primary-opacity     : 1 !default;
 ${{ prefix }}-secondary-opacity   : .4 !default;
+
+{% if 'stacked' in cssChoices %}
 
 ${{ prefix }}-stack-vertical-align: middle !default;
 ${{ prefix }}-stack-width         : (${{ prefix }}-fw-width * 2) !default;
 ${{ prefix }}-stack-z-index       : auto !default;
+
+{% endif %}
 
 ${{ prefix }}-font-display        : block !default;
 ${{ prefix }}-font-path           : "../{{ webfontDir }}" !default;

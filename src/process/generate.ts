@@ -115,6 +115,7 @@ const generateFont: GenerateFont = async (outputDir, subsetMeta, mfContext) => {
         license: mfContext.licenseContent,
         blobObject: blobObj,
         writeOutFiles: options.writeOutFiles || DEFAULT_WRITE_OUT_FILES,
+        cssChoices: options.cssChoices,
       };
 
       // render scss/css files
