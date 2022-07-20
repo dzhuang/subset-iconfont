@@ -7,7 +7,6 @@ import {
   FONT_WEB_PAGE_FILE_NAME,
   LICENSE_FILE_NAME,
   METADATA_FILE_NAME,
-  SCSS_FILE_NAMES,
   SCSS_FOLDER_NAME,
 } from '../providers/constants';
 import { writeFileSync } from '../utils/utils';
@@ -55,19 +54,22 @@ const createScssFiles = (
   const usedStyles = getUsedStyle(context.icons),
     outputPath = pathJoin(tempDir.name, SCSS_FOLDER_NAME);
 
-  context.cssChoices = context.cssChoices || [
-    'animated', 'bordered-pulled', 'fixed-width', 'list',
-    'rotated-flipped', 'screen-reader', 'sizing', 'stacked']
-
   const updatedRenderContext = {
     ...context,
     styles: usedStyles,
     scssTargets: [context.fontFileName, ...context.SCSSTargets],
   };
 
-  const scssFileNames = ['main', 'all', '_core', '_variables', '_mixins', '_functions', '_icons']
+  const scssFileNames = ['main', 'all', '_core', '_variables', '_mixins', '_icons']
 
-  context.cssChoices.forEach((cssChoice)=>{
+  for (const component of ['sizing', 'fixed-width', 'stacked', 'list']){
+    if ((context.cssChoices as CssChoice[]).indexOf(component as CssChoice) > -1){
+      scssFileNames.push('_functions')
+      break
+    }
+  }
+
+  (context.cssChoices as CssChoice[]).forEach((cssChoice)=>{
     scssFileNames.push(`_${cssChoice}`)
   })
 

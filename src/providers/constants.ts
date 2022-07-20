@@ -1,6 +1,7 @@
 import { Style } from '../types/Metadata';
 import { WriteOutFiles } from '../process/types/RenderContext';
 import { Formats } from '../process/types/SubsetFunc';
+import {CssChoice} from "../process/types/CssChoices";
 
 export const DEFAULT_COMBINE_FILE_NAME = 'subset-iconfont';
 export const DEFAULT_COMBINE_FONT_NAME = 'Subset Iconfont';
@@ -63,22 +64,18 @@ export const AVAILABLE_OUTPUT_FORMATS: Formats = [
   'ttf',
 ];
 
-export const SCSS_FILE_NAMES = [
-  'main',
-  '_functions',
-  '_variables',
-  '_mixins',
-  '_core',
-  '_sizing',
-  '_fixed-width',
-  '_list',
-  '_bordered-pulled',
-  '_animated',
-  '_rotated-flipped',
-  '_stacked',
-  '_icons',
-  '_screen-reader',
-  'all',
+export const DEFAULT_CSS_CHOICES: CssChoice[] = [
+  'sizing',
+  'fixed-width',
+  'list',
+  'bordered',
+  'pulled',
+  'animated',
+  'rotated',
+  'flipped',
+  'stacked',
+  'inverse',
+  'screen-reader',
 ];
 
 export const STYLE_FONT_WEIGHT_MAP: Record<Style, number | string> = {

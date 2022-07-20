@@ -1,4 +1,6 @@
+{%- if 'sizing' in cssChoices or 'fixed-width' in cssChoices  or 'stacked' in cssChoices  or 'list' in cssChoices -%}
 @import 'functions';
+{% endif -%}
 @import 'variables';
 
 :root, :host {
@@ -24,6 +26,5 @@
   font-family: '{{ fontName }}{% if style != "normal" %} {{ style | title }}{% endif %}';
   font-weight: {{ fontWeight }};
 }
-
-{% block iconsSpecial %}
-{% endblock %}
+{% block iconsSpecial -%}
+{%- endblock -%}

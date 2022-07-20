@@ -7,7 +7,7 @@ import { join as pathJoin } from 'path';
 import {
   DEFAULT_COMBINE_FILE_NAME,
   DEFAULT_COMBINE_FONT_NAME,
-  DEFAULT_COMBINE_PREFIX,
+  DEFAULT_COMBINE_PREFIX, DEFAULT_CSS_CHOICES,
   DEFAULT_LOGGER_LEVEL,
   DEFAULT_OUTPUT_FORMATS,
   DEFAULT_WRITE_OUT_FILES,
@@ -90,7 +90,8 @@ const subsetIconfont: SubsetIconfont = (
     loggerOptions = options.loggerOptions,
     prefix = options.prefix || DEFAULT_COMBINE_PREFIX,
     sort = 'undefined' === typeof options.sort ? true : options.sort,
-    webfontDir = options.webfontDir || WEBFONTS_DIR_NAME;
+    webfontDir = options.webfontDir || WEBFONTS_DIR_NAME,
+    cssChoices = options.cssChoices || DEFAULT_CSS_CHOICES;
 
   const initializedProviderObjects: ProviderConstructor[] = [];
 
@@ -117,6 +118,7 @@ const subsetIconfont: SubsetIconfont = (
       !outputPackages
     );
     providerObject.setOptions('addHashInFontUrl', options.addHashInFontUrl);
+    providerObject.setOptions('cssChoices', cssChoices);
 
     initializedProviderObjects.push(providerObject);
   }
@@ -152,6 +154,7 @@ const subsetIconfont: SubsetIconfont = (
           options.writeOutFiles || DEFAULT_WRITE_OUT_FILES;
 
         renderContext.fontFileName = fontFileName;
+        renderContext.cssChoices = cssChoices;
 
         // merge MetaDataset in results
         renderContext.icons = Object.assign(

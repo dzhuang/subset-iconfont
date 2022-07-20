@@ -17,6 +17,7 @@ declare type RenderContextBase = {
   fontName: string;
   formats: Formats;
   fontFileName: string;
+  cssChoices? : CssChoice[]
 };
 export declare type FontFaceRenderContext = RenderContextBase & {
   hash?: string | undefined;
@@ -35,5 +36,4 @@ export declare type RenderContext = RenderContextBase & {
   logger: Logger;
   blobObject: BlobObject;
   writeOutFiles: WriteOutFiles;
-  cssChoices? : CssChoice[]
 };

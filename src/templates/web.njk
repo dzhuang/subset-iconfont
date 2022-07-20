@@ -415,7 +415,7 @@ MIT License Copyright (c) 2019 Austin Andrews #}
           </section>
         {% endif %}
 
-        {% if 'rotated-flipped' in cssChoices %}
+        {% if 'rotated' in cssChoices %}
           <section>
             <h3>Rotate</h3>
 
@@ -448,7 +448,9 @@ MIT License Copyright (c) 2019 Austin Andrews #}
               </div>
             {% endfor %}
             </div>
+          {% endif %}
 
+          {% if 'flipped' in cssChoices %}
             <h3>Flip</h3>
 
             <div class="examples">
@@ -524,20 +526,24 @@ MIT License Copyright (c) 2019 Austin Andrews #}
             </div>
           </section>
         {% endif %}
+
+
           <section>
             <h3>Color</h3>
 
             <div class="examples">
-              <div>
-                <div style="background-color: red">
-                  <i
-                    class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-inverse {{ prefix }}-{{ name }}"
-                  ></i>
-                </div>
+              {% if 'inverse' in cssChoices %}
                 <div>
-                  <code>{{ prefix }}-inverse</code>
+                  <div style="background-color: red">
+                    <i
+                      class="{{ prefix }}{%- if iconStyle !="normal" %}-{{ iconStyle }}{% endif %} {{ prefix }}-lg {{ prefix }}-inverse {{ prefix }}-{{ name }}"
+                    ></i>
+                  </div>
+                  <div>
+                    <code>{{ prefix }}-inverse</code>
+                  </div>
                 </div>
-              </div>
+              {% endif %}
               <div>
                 <div style="color: red">
                   <i
