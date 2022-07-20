@@ -1,6 +1,6 @@
 const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 import {
   PACKAGES_OUTPUT_DIR,
