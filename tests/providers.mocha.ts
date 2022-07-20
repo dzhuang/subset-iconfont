@@ -470,7 +470,7 @@ describe('providerBase subclass test', () => {
   });
 });
 
-describe.only(`cssChoices subset test`, function () {
+describe(`cssChoices subset test`, function () {
   const getAllCssFileContentFromResult = (result: MakeFontResult) => {
     for (const css of result.blobObject.css) {
       if (css.name === 'all.css') {
