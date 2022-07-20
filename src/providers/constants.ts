@@ -1,7 +1,7 @@
 import { Style } from '../types/Metadata';
 import { WriteOutFiles } from '../process/types/RenderContext';
 import { Formats } from '../process/types/SubsetFunc';
-import {CssChoice} from "../process/types/CssChoices";
+import { CssChoice } from '../process/types/CssChoices';
 
 export const DEFAULT_COMBINE_FILE_NAME = 'subset-iconfont';
 export const DEFAULT_COMBINE_FONT_NAME = 'Subset Iconfont';

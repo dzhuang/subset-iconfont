@@ -22,7 +22,7 @@ import {
 import { WebRenderContext } from './types/WebRenderContext';
 import { MakeFontResult } from './types/MakeFontResult';
 import * as Buffer from 'buffer';
-import {CssChoice} from "./types/CssChoices";
+import { CssChoice } from './types/CssChoices';
 
 const sass = require('node-sass');
 const pkjJson = require('../../package.json');
@@ -60,18 +60,27 @@ const createScssFiles = (
     scssTargets: [context.fontFileName, ...context.SCSSTargets],
   };
 
-  const scssFileNames = ['main', 'all', '_core', '_variables', '_mixins', '_icons']
+  const scssFileNames = [
+    'main',
+    'all',
+    '_core',
+    '_variables',
+    '_mixins',
+    '_icons',
+  ];
 
-  for (const component of ['sizing', 'fixed-width', 'stacked', 'list']){
-    if ((context.cssChoices as CssChoice[]).indexOf(component as CssChoice) > -1){
-      scssFileNames.push('_functions')
-      break
+  for (const component of ['sizing', 'fixed-width', 'stacked', 'list']) {
+    if (
+      (context.cssChoices as CssChoice[]).indexOf(component as CssChoice) > -1
+    ) {
+      scssFileNames.push('_functions');
+      break;
     }
   }
 
-  (context.cssChoices as CssChoice[]).forEach((cssChoice)=>{
-    scssFileNames.push(`_${cssChoice}`)
-  })
+  (context.cssChoices as CssChoice[]).forEach((cssChoice) => {
+    scssFileNames.push(`_${cssChoice}`);
+  });
 
   scssFileNames.forEach((templateBasename) => {
     const outputFileName =
