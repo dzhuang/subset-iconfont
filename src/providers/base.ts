@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'fs';
 import { getLogger } from '../utils/utils';
 import { ConfigError, WarningError } from '../utils/errors';
 import {
+  DEFAULT_CSS_CHOICES,
   DEFAULT_LOGGER_LEVEL,
   DEFAULT_OUTPUT_FORMATS,
   DEFAULT_STYLE,
@@ -377,6 +378,7 @@ export abstract class ProviderConstructor implements ProviderInterface {
     this.setOptions('prefix', this.options.prefix || this.cssPrefix);
     this.setOptions('webfontDir', WEBFONTS_DIR_NAME);
     this.setOptions('fontName', this.fontName);
+    this.setOptions('cssChoices', DEFAULT_CSS_CHOICES);
 
     this.setOptions(
       'writeOutFiles',

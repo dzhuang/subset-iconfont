@@ -1,6 +1,7 @@
 import { MetaDataset, Style } from '../../types/Metadata';
 import { Logger } from '../../types/Logger';
 import { Formats } from './SubsetFunc';
+import { CssChoice } from './CssChoices';
 
 export declare type BlobCategory = 'webfonts' | 'scss' | 'css' | 'licenses';
 export declare type BlobObject = Record<BlobCategory, MakeFontBlob[]>;
@@ -16,6 +17,7 @@ declare type RenderContextBase = {
   fontName: string;
   formats: Formats;
   fontFileName: string;
+  cssChoices?: CssChoice[];
 };
 export declare type FontFaceRenderContext = RenderContextBase & {
   hash?: string | undefined;

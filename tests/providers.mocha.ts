@@ -1,5 +1,7 @@
 'use strict';
 
+import { CssChoice } from '../src/process/types/CssChoices';
+
 const REMOVE_TEMP_AFTER_EACH_TEST = true;
 const fs = require('fs');
 const winston = require('winston');
@@ -26,6 +28,7 @@ import {
 } from './helpers';
 
 import { ConfigError } from '../src/utils/errors';
+import { MakeFontResult } from '../dist/process/types/MakeFontResult';
 
 const sinon = require('sinon');
 
@@ -464,5 +467,159 @@ describe('providerBase subclass test', () => {
     }
     if (!thrown) throw new Error('Expected error not raise');
     tmpDir.removeCallback();
+  });
+});
+
+describe(`cssChoices subset test`, function () {
+  const getAllCssFileContentFromResult = (result: MakeFontResult) => {
+    for (const css of result.blobObject.css) {
+      if (css.name === 'all.css') {
+        return css.data.toString();
+      }
+    }
+    throw new Error('all.css does not exist in result.');
+  };
+
+  const assertCssContains = function (
+    result: MakeFontResult,
+    containedStrings: string[]
+  ) {
+    const cssContent = getAllCssFileContentFromResult(result);
+    containedStrings.forEach((sub) => {
+      assert.equal(
+        cssContent.includes(sub),
+        true,
+        `The content of all.css unexpectedly DOES NOT CONTAIN "${sub}":\n${cssContent}`
+      );
+    });
+  };
+
+  const assertCssDoesNotContain = function (
+    result: MakeFontResult,
+    containedStrings: string[]
+  ) {
+    const cssContent = getAllCssFileContentFromResult(result);
+    containedStrings.forEach((sub) => {
+      assert.equal(
+        cssContent.includes(sub),
+        false,
+        `The content of all.css unexpectedly CONTAINS "${sub}":\n${cssContent}`
+      );
+    });
+  };
+
+  async function runSubset(cssChoices: CssChoice[], cb: any) {
+    const fa = new FaFreeProvider(['plus'], { cssChoices: cssChoices }),
+      tmpDir = getTemp();
+    await fa
+      .makeFonts(tmpDir.name)
+      .then((result) => {
+        if (cb) cb(result);
+      })
+      .catch((e) => {
+        throw e;
+      })
+      .finally(() => tmpDir.removeCallback());
+  }
+
+  it('should work with empty cssChoice', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus']);
+      assertCssDoesNotContain(result, [
+        '.fa-1x', // sizing
+        '.fa-fw', // fixed-width
+        '.fa-ul',
+        '.fa-li', // list
+        '.fa-border', // bordered
+        '.fa-pull-left',
+        '.fa-pull-right', // pulled
+        '.fa-fade',
+        '.fa-beat',
+        '.fa-bounce',
+        '.fa-flip', // animated
+        '.fa-rotate-by', // rotated
+        '.fa-flip-both', // flipped
+        '.fa-stack-2x', // stacked
+        '.fa-inverse', // inverse
+        '.fa-sr-only', // screen-reader
+      ]);
+    };
+    await runSubset([], cb);
+  });
+  it('should work with ["sizing"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-1x']);
+    };
+    await runSubset(['sizing'], cb);
+  });
+  it('should work with ["fixed-width"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-fw']);
+    };
+    await runSubset(['fixed-width'], cb);
+  });
+  it('should work with ["list"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-ul', '.fa-li']);
+    };
+    await runSubset(['list'], cb);
+  });
+  it('should work with ["bordered"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-border']);
+    };
+    await runSubset(['bordered'], cb);
+  });
+  it('should work with ["pulled"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, [
+        '.fa-plus',
+        '.fa-pull-left',
+        '.fa-pull-right',
+      ]);
+    };
+    await runSubset(['pulled'], cb);
+  });
+  it('should work with ["animated"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, [
+        '.fa-plus',
+        '.fa-fade',
+        '.fa-beat',
+        '.fa-bounce',
+        '.fa-flip',
+      ]);
+    };
+    await runSubset(['animated'], cb);
+  });
+  it('should work with ["rotated"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-rotate-by']);
+    };
+    await runSubset(['rotated'], cb);
+  });
+  it('should work with ["flipped"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-flip-both']);
+    };
+    await runSubset(['flipped'], cb);
+  });
+  it('should work with ["stacked"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-stack-2x']);
+    };
+    await runSubset(['stacked'], cb);
+  });
+  it('should work with ["inverse"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-inverse']);
+    };
+    await runSubset(['inverse'], cb);
+  });
+  it('should work with ["screen-reader"]', async () => {
+    const cb = (result: MakeFontResult) => {
+      assertCssContains(result, ['.fa-plus', '.fa-sr-only']);
+    };
+    await runSubset(['screen-reader'], cb);
   });
 });

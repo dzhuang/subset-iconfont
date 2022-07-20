@@ -1,0 +1,15 @@
+// flipping icons (extracted from _rotated-flipped.scss)
+// -------------------------
+
+.#{${{ prefix }}-css-prefix}-flip-horizontal {
+  transform: scale(-1, 1);
+}
+
+.#{${{ prefix }}-css-prefix}-flip-vertical {
+  transform: scale(1, -1);
+}
+
+.#{${{ prefix }}-css-prefix}-flip-both,
+.#{${{ prefix }}-css-prefix}-flip-horizontal.#{${{ prefix }}-css-prefix}-flip-vertical {
+  transform: scale(-1, -1);
+}

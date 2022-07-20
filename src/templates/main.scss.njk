@@ -3,17 +3,43 @@
  * License - https://fontawesome.com/license/free (Code: MIT License)
  * Copyright 2022 Fonticons, Inc.
  */
-
+{% if 'sizing' in cssChoices or 'fixed-width' in cssChoices  or 'stacked' in cssChoices  or 'list' in cssChoices -%}
 @import 'functions';
+{% endif -%}
 @import 'variables';
 @import 'mixins';
 @import 'core';
+{% if 'sizing' in cssChoices -%}
 @import 'sizing';
+{% endif %}
+{%- if 'fixed-width' in cssChoices -%}
 @import 'fixed-width';
+{% endif %}
+{%- if 'list' in cssChoices -%}
 @import 'list';
-@import 'bordered-pulled';
+{% endif %}
+{%- if 'bordered' in cssChoices -%}
+@import 'bordered';
+{% endif %}
+{%- if 'pulled' in cssChoices -%}
+@import 'pulled';
+{% endif %}
+{%- if 'animated' in cssChoices -%}
 @import 'animated';
-@import 'rotated-flipped';
+{% endif %}
+{%- if 'rotated' in cssChoices -%}
+@import 'rotated';
+{% endif %}
+{%- if 'flipped' in cssChoices -%}
+@import 'flipped';
+{% endif %}
+{%- if 'stacked' in cssChoices -%}
 @import 'stacked';
+{% endif %}
+{%- if 'inverse' in cssChoices -%}
+@import 'inverse';
+{% endif -%}
 @import 'icons';
+{% if 'screen-reader' in cssChoices -%}
 @import 'screen-reader';
+{%- endif %}

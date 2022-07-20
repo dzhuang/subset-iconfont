@@ -12,12 +12,18 @@
   line-height: 1;
 }
 
+{% if 'sizing' in cssChoices %}
+
 // sets relative font-sizing and alignment (in _sizing)
 @mixin {{ prefix }}-size ($font-size) {
   font-size: {{ prefix }}-divide($font-size, ${{ prefix }}-size-scale-base) * 1em; // converts step in sizing scale into an em-based value that's relative to the scale's base
   line-height: {{ prefix }}-divide(1, $font-size) * 1em; // sets the line-height of the icon back to that of it's parent
   vertical-align: ({{ prefix }}-divide(6, $font-size) - {{ prefix }}-divide(3, 8)) * 1em; // vertically centers the icon taking into account the surrounding text's descender
 }
+
+{% endif %}
+
+{% if 'screen-reader' in cssChoices %}
 
 // only display content to screen readers
 // see: https://www.a11yproject.com/posts/2013-01-11-how-to-hide-content/
@@ -41,7 +47,4 @@
   }
 }
 
-// convenience mixins for declaring pseudo-elements by CSS variable,
-// including all style-specific font properties, and both the ::before
-// and ::after elements in the duotone case.
-
+{% endif %}

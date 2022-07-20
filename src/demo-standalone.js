@@ -44,7 +44,7 @@ const mi = new MiProvider(
     // 'notification-important',
     'add-circle',
   ],
-  { formats: ['ttf', 'woff2'] }
+  { formats: ['ttf', 'woff2'], cssChoices: [] }
 );
 
 mi.makeFonts(outputDir);

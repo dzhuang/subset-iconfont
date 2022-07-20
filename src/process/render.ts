@@ -7,7 +7,6 @@ import {
   FONT_WEB_PAGE_FILE_NAME,
   LICENSE_FILE_NAME,
   METADATA_FILE_NAME,
-  SCSS_FILE_NAMES,
   SCSS_FOLDER_NAME,
 } from '../providers/constants';
 import { writeFileSync } from '../utils/utils';
@@ -23,6 +22,7 @@ import {
 import { WebRenderContext } from './types/WebRenderContext';
 import { MakeFontResult } from './types/MakeFontResult';
 import * as Buffer from 'buffer';
+import { CssChoice } from './types/CssChoices';
 
 const sass = require('node-sass');
 const pkjJson = require('../../package.json');
@@ -60,7 +60,29 @@ const createScssFiles = (
     scssTargets: [context.fontFileName, ...context.SCSSTargets],
   };
 
-  SCSS_FILE_NAMES.forEach((templateBasename) => {
+  const scssFileNames = [
+    'main',
+    'all',
+    '_core',
+    '_variables',
+    '_mixins',
+    '_icons',
+  ];
+
+  for (const component of ['sizing', 'fixed-width', 'stacked', 'list']) {
+    if (
+      (context.cssChoices as CssChoice[]).indexOf(component as CssChoice) > -1
+    ) {
+      scssFileNames.push('_functions');
+      break;
+    }
+  }
+
+  (context.cssChoices as CssChoice[]).forEach((cssChoice) => {
+    scssFileNames.push(`_${cssChoice}`);
+  });
+
+  scssFileNames.forEach((templateBasename) => {
     const outputFileName =
         templateBasename === mainFileName
           ? `${context.fontFileName}.scss`
@@ -221,6 +243,7 @@ const writeBlobs = (
         author: pkjJson.author,
         fontName: context.fontName,
         cacheString: cssHash,
+        cssChoices: context.cssChoices,
       },
       indexHtml = renderEnv.render('web.njk', webRenderContext);
 

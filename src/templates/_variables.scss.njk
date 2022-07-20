@@ -6,15 +6,32 @@ ${{ prefix }}-style-family        : '{{ fontName }}' !default;
 
 ${{ prefix }}-display             : inline-block !default;
 
-${{ prefix }}-fw-width            : {{ prefix }}-divide(20em, 16);
-${{ prefix }}-inverse             : #fff !default;
+${{ prefix }}-font-display        : block !default;
+${{ prefix }}-font-path           : "../{{ webfontDir }}" !default;
 
+{# todo: the following 2 only useful for two toned icons -#}
+${{ prefix }}-primary-opacity     : 1 !default;
+${{ prefix }}-secondary-opacity   : .4 !default;
+
+{# css styles -#}
+
+{%- if 'fixed-width' in cssChoices or 'stacked' in cssChoices -%}
+${{ prefix }}-fw-width            : {{ prefix }}-divide(20em, 16);
+{% endif %}
+
+{%- if 'inverse' in cssChoices -%}
+${{ prefix }}-inverse             : #fff !default;
+{% endif %}
+
+{%- if 'bordered' in cssChoices -%}
 ${{ prefix }}-border-color        : #eee !default;
 ${{ prefix }}-border-padding      : .2em .25em .15em !default;
 ${{ prefix }}-border-radius       : .1em !default;
 ${{ prefix }}-border-style        : solid !default;
 ${{ prefix }}-border-width        : .08em !default;
+{% endif %}
 
+{%- if 'sizing' in cssChoices -%}
 ${{ prefix }}-size-scale-2xs      : 10 !default;
 ${{ prefix }}-size-scale-xs       : 12 !default;
 ${{ prefix }}-size-scale-sm       : 14 !default;
@@ -31,23 +48,25 @@ ${{ prefix }}-sizes: (
   "xl"                  : ${{ prefix }}-size-scale-xl,
   "2xl"                 : ${{ prefix }}-size-scale-2xl
 ) !default;
+{% endif %}
 
+{%- if 'list' in cssChoices -%}
 ${{ prefix }}-li-width            : 2em !default;
 ${{ prefix }}-li-margin           : ${{ prefix }}-li-width * {{ prefix }}-divide(5, 4) !default;
+{% endif %}
 
+{%- if 'pulled' in cssChoices -%}
 ${{ prefix }}-pull-margin         : .3em !default;
+{% endif %}
 
-${{ prefix }}-primary-opacity     : 1 !default;
-${{ prefix }}-secondary-opacity   : .4 !default;
-
+{%- if 'stacked' in cssChoices -%}
 ${{ prefix }}-stack-vertical-align: middle !default;
 ${{ prefix }}-stack-width         : (${{ prefix }}-fw-width * 2) !default;
 ${{ prefix }}-stack-z-index       : auto !default;
+{% endif %}
 
-${{ prefix }}-font-display        : block !default;
-${{ prefix }}-font-path           : "../{{ webfontDir }}" !default;
-
-{% for name, properties in icons | dictsort %}
+{%- if icons %}
+{% for name, properties in icons | dictsort -%}
 ${{ prefix }}-var-{{ name }}: \{{ properties.unicode }};
 {%- endfor %}
 
@@ -56,3 +75,4 @@ ${{ prefix }}-icons: (
     "{{ name }}": ${{ prefix }}-var-{{ name }}{% if not loop.last %},{% endif %}
     {%- endfor %}
 );
+{% endif %}

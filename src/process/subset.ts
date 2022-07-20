@@ -140,6 +140,7 @@ const subset: SubsetFunc = async (subsetTask: SubsetTask) => {
     fontWeight: fontWeight,
     ...(addHashInFontUrl ? { hash: result.hash } : {}),
     taskSubsetItems: subsetTask.subsetItems,
+    cssChoices: options.cssChoices,
   };
 
   // creating font-face scss files

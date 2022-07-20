@@ -13,6 +13,7 @@ Subset multiple iconfont packages and generate CSS/SCSS.
 - Auto generate font LICENSE files for font used;
 - Auto generate FontAwesome styled CSS/SCSS, which means the subset icons can be used like FontAwesome icons, under FontAwesome free license;
 - Auto generate metadata of icons used;
+- Allow customizing (i.e., removing unwanted) FontAwesome CSS/SCSS components;
 - Tested on `linux` and `windows`.
 
 ## Installation
@@ -166,6 +167,13 @@ Allowed members:
 - Default: `true`
 - Description: Whether adding font file hash in font face CSS/SCSS file. This is useful to
   update client caching of font files.
+
+#### `cssChoices`
+
+- Type: `array`
+- Default: `['sizing', 'fixed-width', 'list', 'bordered', 'animated', 'rotated', 'flipped', 'stacked', 'inverse', 'screen-reader']`
+- Description: The FontAwesome CSS/SCSS components that will be generated.
+  This is useful when you want to minimize the generated results. For example, you can set the value to `[]` if you don't need extra CSS features provided by FontAwesome.
 
 ## API
 
