@@ -54,7 +54,7 @@ class MiProvider extends ProviderConstructor implements ProviderInterface {
 
     // We were not able a valid meta data file in this package,
     // so we have to read the css file to get it.
-    const pattern = /mi-([a-z-]+)::before{content:"\\([a-e0-9]+)"/g,
+    const pattern = /mi-([0-9a-z-]+)::before{content:"\\([a-z0-9]+)"/g,
       cssFileContent = readFileSync(cssFile).toString();
     let match;
     do {
