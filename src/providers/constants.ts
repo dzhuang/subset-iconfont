@@ -35,10 +35,15 @@ export const MI_STYLES: Style[] = [
   'two-tone',
 ];
 
+export const FONT_AWESOME4_PACKAGE_NAME = 'font-awesome';
+export const FONT_AWESOME4_DEFAULT_CSS_PREFIX = 'fa';
+export const FONT_AWESOME4_DEFAULT_FONT_NAME = 'FontAwesome 4';
+export const FONT_AWESOME4_DEFAULT_FONT_FILE_NAME = 'font-awesome-4';
+
 export const FONT_AWESOME_FREE_PACKAGE_NAME = '@fortawesome/fontawesome-free';
 export const FONT_AWESOME_FREE_DEFAULT_CSS_PREFIX = 'fa';
-export const FONT_AWESOME_DEFAULT_FONT_NAME = 'FontAwesome Free';
-export const FONT_AWESOME_DEFAULT_FONT_FILE_NAME = 'fontawesome-free';
+export const FONT_AWESOME_FREE_DEFAULT_FONT_NAME = 'FontAwesome Free';
+export const FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME = 'fontawesome-free';
 
 export const BOOTSTRAP_ICON_PACKAGE_NAME = 'bootstrap-icons';
 export const BOOTSTRAP_ICON_CSS_PREFIX = 'bi';

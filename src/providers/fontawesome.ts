@@ -4,8 +4,8 @@ const yaml = require('js-yaml');
 
 import { ProviderConstructor } from './base';
 import {
-  FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
-  FONT_AWESOME_DEFAULT_FONT_NAME,
+  FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME,
+  FONT_AWESOME_FREE_DEFAULT_FONT_NAME,
   FONT_AWESOME_FREE_DEFAULT_CSS_PREFIX,
   FONT_AWESOME_FREE_PACKAGE_NAME,
 } from './constants';
@@ -22,8 +22,8 @@ class FaFreeProvider extends ProviderConstructor implements ProviderInterface {
   packageName = FONT_AWESOME_FREE_PACKAGE_NAME;
   minVersion = '5.0';
   cssPrefix = FONT_AWESOME_FREE_DEFAULT_CSS_PREFIX;
-  fontName = FONT_AWESOME_DEFAULT_FONT_NAME;
-  fontFileName = FONT_AWESOME_DEFAULT_FONT_FILE_NAME;
+  fontName = FONT_AWESOME_FREE_DEFAULT_FONT_NAME;
+  fontFileName = FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME;
 
   style2FontFileMap = {
     brands: 'webfonts/fa-brands-400.ttf',

@@ -61,6 +61,11 @@ The process runs on a list of `ProviderInstance`, or `ProviderConstructor` insta
   - License: [Font Awesome Free License](https://fontawesome.com/license/free)
   - Required npm package: `@fortawesome/fontawesome-free`
   - styles: `solid`, `regular`, `brands` allowed by the Fontawesome Free license
+- `Fa4Provider`
+  - Source: [FontAwesome 4](https://www.npmjs.com/package/font-awesome) by @fontawesome
+  - License: Same with ``FaFreeProvider``, need download manually from [Font Awesome Free License](https://fontawesome.com/license/free).
+  - Required npm package: `font-awesome`
+  - styles: no styles.
 - `MdiProvider`
   - Source: [Material Design Icons](https://materialdesignicons.com/) by Austin Andrews
   - License: [MIT license](https://github.com/Templarian/MaterialDesign/blob/master/LICENSE)
@@ -76,7 +81,7 @@ The process runs on a list of `ProviderInstance`, or `ProviderConstructor` insta
   - License: [Apache License version 2.0](https://github.com/marella/material-icons/blob/main/LICENSE)
   - Required npm packages: `material-icons` and `@material-design-icons/svg`
 
-Note: For provider with styles properties, the program will extract all available style of that icon.
+Note: For provider with styles properties, the program will extract all available styles of that icon.
 
 The syntax to create a `ProviderInstance` is:
 

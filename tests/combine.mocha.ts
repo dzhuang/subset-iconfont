@@ -14,7 +14,7 @@ import {
 import {
   MDI_DEFAULT_FONT_FILE_NAME,
   DEFAULT_OUTPUT_FORMATS,
-  FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
+  FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME,
   DEFAULT_COMBINE_FILE_NAME,
   COMBINED_CSS_NAME,
   LICENSE_FILE_NAME,
@@ -235,7 +235,7 @@ describe('General tests', () => {
           {
             names: {
               exist: ['fa-regular-400', 'fa-solid-900'],
-              nonExist: [FONT_AWESOME_DEFAULT_FONT_FILE_NAME],
+              nonExist: [FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME],
             },
             extensions: { exist: DEFAULT_OUTPUT_FORMATS },
           },
