@@ -5,6 +5,7 @@ const {
   MdiProvider,
   BiProvider,
   MiProvider,
+  Fa4Provider,
 } = require('./index');
 
 const outputDir = './output-standalone';
@@ -48,3 +49,12 @@ const mi = new MiProvider(
 );
 
 mi.makeFonts(outputDir);
+
+const fa4 = new Fa4Provider(
+  [
+    '__all__',
+  ],
+  { formats: ['ttf', 'woff2']}
+);
+
+fa4.makeFonts(outputDir);

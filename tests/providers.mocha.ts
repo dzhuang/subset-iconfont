@@ -7,15 +7,16 @@ const fs = require('fs');
 const winston = require('winston');
 const assert = require('assert');
 
-import { MdiProvider, FaFreeProvider, BiProvider, MiProvider } from '../src';
+import { MdiProvider, FaFreeProvider, BiProvider, MiProvider, Fa4Provider } from '../src';
 import {
   MDI_DEFAULT_FONT_FILE_NAME,
   DEFAULT_OUTPUT_FORMATS,
-  FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
+  FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME,
   DEFAULT_COMBINE_FILE_NAME,
   COMBINED_CSS_NAME,
   BOOTSTRAP_ICONS_FONT_FILE_NAME,
   MI_DEFAULT_FONT_FILE_NAME,
+  FONT_AWESOME4_DEFAULT_FONT_FILE_NAME
 } from '../src/providers/constants';
 
 import {
@@ -28,7 +29,7 @@ import {
 } from './helpers';
 
 import { ConfigError } from '../src/utils/errors';
-import { MakeFontResult } from '../dist/process/types/MakeFontResult';
+import { MakeFontResult } from '../src/process/types/MakeFontResult';
 
 const sinon = require('sinon');
 
@@ -88,7 +89,7 @@ describe('Providers should be able to work alone', () => {
       },
       done,
       {
-        providerSubPath: FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
+        providerSubPath: FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME,
         providerCssFiles: [
           {
             names: {
@@ -96,7 +97,7 @@ describe('Providers should be able to work alone', () => {
                 COMBINED_CSS_NAME,
                 'fa-regular',
                 'fa-solid',
-                FONT_AWESOME_DEFAULT_FONT_FILE_NAME,
+                FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME,
               ],
               nonExist: [DEFAULT_COMBINE_FILE_NAME],
             },
@@ -107,7 +108,7 @@ describe('Providers should be able to work alone', () => {
           {
             names: {
               exist: ['fa-regular-400', 'fa-solid-900'],
-              nonExist: [FONT_AWESOME_DEFAULT_FONT_FILE_NAME],
+              nonExist: [FONT_AWESOME_FREE_DEFAULT_FONT_FILE_NAME],
             },
             extensions: { exist: DEFAULT_OUTPUT_FORMATS },
           },
@@ -197,6 +198,45 @@ describe('Providers should be able to work alone', () => {
 
         metaDataExist: true,
         licenseFilesExist: true,
+        webPageFileExist: true,
+      }
+    );
+  });
+
+  it('fa4 (Font Awesome 4) should be able to work alone', (done) => {
+    generateProviderSubsetFont(
+      Fa4Provider,
+      {
+        subset: ['non-exist-icon', 'check'], // cloud-haze-1 doesn't exist as a file
+      },
+      done,
+      {
+        providerSubPath: FONT_AWESOME4_DEFAULT_FONT_FILE_NAME,
+        providerCssFiles: [
+          {
+            names: {
+              exist: [
+                COMBINED_CSS_NAME,
+                FONT_AWESOME4_DEFAULT_FONT_FILE_NAME,
+              ],
+            },
+            extensions: { exist: DEFAULT_CSS_OUTPUT_EXTENSIONS },
+          },
+        ],
+
+        providerFontFiles: [
+          {
+            names: {
+              exist: [
+                FONT_AWESOME4_DEFAULT_FONT_FILE_NAME,
+              ],
+            },
+            extensions: { exist: DEFAULT_OUTPUT_FORMATS },
+          },
+        ],
+
+        metaDataExist: true,
+        licenseFilesExist: false,
         webPageFileExist: true,
       }
     );
