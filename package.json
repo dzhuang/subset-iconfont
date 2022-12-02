@@ -54,7 +54,7 @@
   "dependencies": {
     "js-yaml": "^4.1.0",
     "mkdirp": "^1.0.4",
-    "node-sass": "^7.0.1",
+    "node-sass": "^8.0.0",
     "nunjucks": "^3.2.3",
     "subset-font": "^1.4.0",
     "tmp": "^0.2.1",
