@@ -73,7 +73,7 @@
     "@mdi/svg": "^7.0.96",
     "@types/mkdirp": "^1.0.2",
     "@types/mocha": "^10.0.0",
-    "@types/node": "^18.0.0",
+    "@types/node": "^20.0.0",
     "@types/tmp": "^0.2.3",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
