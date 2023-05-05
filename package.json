@@ -71,7 +71,7 @@
     "@material-design-icons/svg": "^0.14.1",
     "@mdi/font": "^7.0.96",
     "@mdi/svg": "^7.0.96",
-    "@types/mkdirp": "^1.0.2",
+    "@types/mkdirp": "^2.0.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "^20.0.0",
     "@types/tmp": "^0.2.3",
