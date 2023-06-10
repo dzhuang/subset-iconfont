@@ -158,6 +158,31 @@ describe('General tests', () => {
     );
   });
 
+  it('should not work for iconName with "_" instead of "-" as separator', (done) => {
+    // The first will log: do you mean "arrow-left" instead?
+    // the second will log: "icon_does_not_exists" does not exists in metadata available
+    const mdi = new MdiProvider(['arrow_left', 'icon_does_not_exists']);
+
+    generateCombinedSubsetFont(
+      {
+        subset: [mdi],
+      },
+      done,
+
+      // this should generate nothing, we simply check if the css is generated.
+      {
+        cssFileNames: [
+          {
+            names: {
+              nonExist: [COMBINED_CSS_NAME, DEFAULT_COMBINE_FILE_NAME],
+            },
+            extensions: { exist: [] },
+          },
+        ],
+      }
+    );
+  });
+
   it('should not work for mdi when icons not exist were input multiple times', (done) => {
     const mdi = new MdiProvider([
       'icon-does-not-exists',

@@ -179,10 +179,20 @@ export abstract class ProviderConstructor implements ProviderInterface {
   }
 
   private validateIconMeta(iconName: SubsetItem): MetaData {
-    if (typeof this.allMetaData[iconName] === 'undefined')
+    if (typeof this.allMetaData[iconName] === 'undefined') {
+      if (iconName.includes('_')) {
+        const alterIconName = iconName.replace(/_/g, '-');
+        if ('undefined' !== typeof this.allMetaData[alterIconName]) {
+          throw new WarningError(
+            `"${iconName}" does not exists in metadata available, ` +
+            `do you mean "${alterIconName}" instead?`
+          );
+        }
+      }
       throw new WarningError(
         `"${iconName}" does not exists in metadata available.`
       );
+    }
 
     const metaData: MetaData = this.normalizeIconMeta(iconName);
 
