@@ -1,6 +1,6 @@
 {
   "name": "subset-iconfont",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Utility to generate subset of webfonts from subsets of multiple iconfont and use FontAwesome style css.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
