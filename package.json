@@ -75,7 +75,7 @@
     "@types/mocha": "^10.0.0",
     "@types/node": "^20.0.0",
     "@types/tmp": "^0.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^5.27.1",
     "bootstrap-icons": "^1.8.3",
     "copyfiles": "^2.4.1",
