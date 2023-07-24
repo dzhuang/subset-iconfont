@@ -80,7 +80,7 @@
     "bootstrap-icons": "^1.8.3",
     "copyfiles": "^2.4.1",
     "eslint": "^8.17.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "font-awesome": "^4.7.0",
     "material-icons": "^1.11.2",
     "mocha": "^10.0.0",
